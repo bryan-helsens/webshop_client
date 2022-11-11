@@ -28,7 +28,7 @@ const MainCarousel = () => {
         showThumbs={false}
         showIndicators={false}
         showStatus={false}
-        //autoPlay={true}
+        autoPlay={true}
         interval={5000}
         emulateTouch={true}
         transitionTime={2000}

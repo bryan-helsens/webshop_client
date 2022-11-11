@@ -47,7 +47,7 @@ const RouteApp = () => {
                   <Route path="/admin" exact  element={<Dashboard />} />
                 </Route>
 
-                <Route path="/item/:itemID" element={<ItemDetails />} />
+                <Route path="/product/:itemID" element={<ItemDetails />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<Confirmation />} />
 

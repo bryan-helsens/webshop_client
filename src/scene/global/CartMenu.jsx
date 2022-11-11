@@ -23,15 +23,12 @@ const FlexBox = styled(Box)`
 
 const CartMenu = () => {
     const theme = useTheme();
-    const colors = tokens(theme.palette.mode)
+    const colors = tokens(theme.palette.mode);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart.cart);
+    const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
-  
-    const totalPrice = cart.reduce((total, item) => {
-      return total + item.count * item.price;
-    }, 0);
 
   return (
     <Box 
@@ -45,7 +42,6 @@ const CartMenu = () => {
         top="0"
         overflow="auto"
     >
-
         {/* Modal */}
         <Box
             position="fixed"
@@ -53,7 +49,7 @@ const CartMenu = () => {
             bottom="0"
             width="max(400px, 30%)"
             height="100%"
-            backgroundColor={colors.primary[500]}
+            backgroundColor={colors.primary[900]}
         >
             <Box padding="30px" overflow="auto" height="100%">
                 {/* Header */}
@@ -72,15 +68,16 @@ const CartMenu = () => {
                                 <Box flex="1 1 40%">
                                     <img
                                         alt={item?.name}
-                                        width="123px"
-                                        height="164px"
+                                        title={item}
+                                        width="130px"
+                                        height="175px"
                                         src={`${IMAGE_STORAGE_URL}${item.image}`}
                                     />
                                 </Box>
 
-                                <Box flex="1 1 40%">
+                                <Box flex="1 1 60%">
                                     <FlexBox mb="5px">
-                                        <Typography fontWeight="bold">
+                                        <Typography fontWeight="bold" variant="h5">
                                             {item.name}
                                         </Typography>
                                         <IconButton
@@ -93,29 +90,17 @@ const CartMenu = () => {
                                     </FlexBox>
                                     <Typography>{item.shortDescription}</Typography>
                                     <FlexBox m="15px 0">
-                                        <Box
-                                            display="flex"
-                                            alignItems="center"
-                                            border={`1.5px solid ${colors.primary[500]}`}
-                                        >
-                                            <IconButton
-                                                onClick={() =>
-                                                    dispatch(decreaseCount({ id: item.id }))
-                                                }
-                                            >
+                                        <Box display="flex" alignItems="center" border={`1.5px solid ${colors.primary[300]}`} mr="20px" p="2px 5px" borderRadius="5%">
+                                            <IconButton onClick={() => dispatch(decreaseCount({ id: item.id }))}>
                                                 <RemoveIcon />
                                             </IconButton>
-                                            <Typography>{item.count}</Typography>
-                                            <IconButton
-                                                onClick={() =>
-                                                    dispatch(increaseCount({ id: item.id }))
-                                                }
-                                            >
+                                            <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{item.count}</Typography>
+                                            <IconButton onClick={() => dispatch(increaseCount({ id: item.id }))}>
                                                 <AddIcon />
                                             </IconButton>
                                         </Box>
-                                        <Typography fontWeight="bold">
-                                            € {item.price}
+                                        <Typography fontWeight="bold" variant="h5">
+                                            € {(item.price* item.count).toFixed(2)}
                                         </Typography>
                                     </FlexBox>
                                 </Box>
@@ -128,12 +113,12 @@ const CartMenu = () => {
                 {/* Actions */}
                 <Box m="20px 0">
                     <FlexBox m="20px 0">
-                        <Typography fontWeight="bold">SUBTOTAL</Typography>
-                        <Typography fontWeight="bold">€ {totalPrice}</Typography>
+                        <Typography fontWeight="bold" variant="h4">SUBTOTAL</Typography>
+                        <Typography fontWeight="bold" variant="h4">€ {totalPrice.toFixed(2)}</Typography>
                     </FlexBox>
                     <Button
                         sx={{
-                            backgroundColor: colors.blueAccent[700],
+                            backgroundColor: colors.redAccent[500],
                             "&:hover": { backgroundColor: colors.blueAccent[500] },
                             color: "white",
                             borderRadius: 0,

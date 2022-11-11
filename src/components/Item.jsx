@@ -1,25 +1,23 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { IconButton, Box, Typography, useTheme, Button } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import { IconButton, Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { addToCart } from "../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { IMAGE_STORAGE_URL } from "../api/URL";
+import BtnAddToCart from "./button/ButtonAddToCart";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const Item = ({ item, width }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [count, setCount] = useState(1)
     const [isHovered, setIsHovered] = useState(false)
     const { category, price, name, image } = item;
 
   return (
-    <Box width={width} display="flex" flexDirection="column">
+    <Box width={width} display="flex" flexDirection="column" mb="20px">
         <Box
           position="relative"
           onMouseOver={() => setIsHovered(true)}
@@ -29,8 +27,8 @@ const Item = ({ item, width }) => {
             alt={item.name}
             width="300px"
             height="400px"
-            src={`${IMAGE_STORAGE_URL}${item.image}`}
-            onClick={() => navigate(`/item/${item.id}`)}
+            src={`${IMAGE_STORAGE_URL}${image}`}
+            onClick={() => navigate(`/product/${item.id}`)}
             style={{ cursor: "pointer" }}
            /> 
            <Box
@@ -42,32 +40,24 @@ const Item = ({ item, width }) => {
             padding="0 5%"
            >
             <Box display="flex" justifyContent="space-between">
-                <Box
-                display="flex"
+              <Box 
+                display="flex"     
                 alignItems="center"
                 backgroundColor={colors.redAccent[500]}
-                borderRadius="3px"
-                >
-                  <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
-                      <RemoveIcon />
-                  </IconButton>
-                  <Typography color={colors.grey[900]} fontSize="1rem">{count}</Typography>
-                  <IconButton onClick={() => setCount(count + 1)}>
-                      <AddIcon />
-                  </IconButton>
-                </Box>
-            <Button
-              onClick={() => {
-                dispatch(addToCart({ item: { ...item, count } }));
-              }}
-              sx={{ 
-                backgroundColor: colors.primary[900],
-                "&:hover": { backgroundColor: "white", color: "black" },
-                color: "white"
-              }}
-            >
-              Add to Cart
-            </Button>
+                borderRadius="5%"
+                mr="20px" 
+                p="2px 5px"
+              >
+                <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
+                    <RemoveIcon />
+                </IconButton>
+                <Typography color={colors.primary[900]} sx={{ p: "0 5px" }} fontSize="1rem">{count}</Typography>
+                <IconButton onClick={() => setCount(count + 1)}>
+                    <AddIcon />
+                </IconButton>
+              </Box>
+
+              <BtnAddToCart count={count} product={item} size="small" />
           </Box>
         </Box>
       </Box>
@@ -77,7 +67,7 @@ const Item = ({ item, width }) => {
           {category?.name}
         </Typography>
         <Typography color={colors.secondary} fontWeight="bold" fontSize="1.2rem" >{name}</Typography>
-        <Typography fontWeight="bold" fontSize="1rem" color={colors.secondary}>€ {price}</Typography>
+        <Typography fontWeight="bold" fontSize="1rem" color={colors.secondary}>€ {price.replace('.', ',')}</Typography>
       </Box>
     </Box>
   )

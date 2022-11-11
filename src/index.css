@@ -43,7 +43,7 @@ a {
 
 /* Sticky Header */
 .mainHeader {
-  z-index: 99;
+  z-index: 9;
   padding: 12px 18px;
   text-align: center;
 }
@@ -60,5 +60,5 @@ a {
   top: 0;
 }
 .fixedTop + .main-block {
-  padding-top: 102px;
+  padding-top: 100px;
 }

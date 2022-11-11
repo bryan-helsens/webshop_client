@@ -15,3 +15,31 @@ export const getProducts = async (page, category, search) => {
         console.error(error);
     }
 }
+
+export const getRelatedProducts = async (category) => {
+    try {  
+        const res = await axios.get(`${PRODUCTS_GET_URL}?category_slug=${category}`);
+
+        if (res?.status === 200) {
+            return res?.data.data;
+        }
+
+        return null;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getproductByID = async (id) => {
+    try {  
+        const res = await axios.get(`${PRODUCTS_GET_URL}/${id}`);
+
+        if (res?.status === 200) {
+            return res?.data;
+        }
+
+        return null;
+    } catch (error) {
+        console.error(error);
+    }
+}
