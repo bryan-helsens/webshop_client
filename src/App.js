@@ -17,9 +17,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Container>
-            <RouteApp />
-          </Container>
+          <RouteApp />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

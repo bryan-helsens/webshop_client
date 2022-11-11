@@ -6,6 +6,7 @@ const Auth = createContext();
 export const AuthContext = ({ children }) => {
     const [auth, setAuth] = useState({});
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [currency, setCurrency] = useState("€")
 
     useEffect(() => {
         if (auth?.user !== undefined){
@@ -41,7 +42,7 @@ export const AuthContext = ({ children }) => {
 
 
     return (
-        <Auth.Provider value={{ isLoggedIn, setIsLoggedIn, auth, setAuth }}>
+        <Auth.Provider value={{ isLoggedIn, setIsLoggedIn, auth, setAuth, currency }}>
             {children}
         </Auth.Provider>
     )

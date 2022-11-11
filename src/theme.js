@@ -60,6 +60,9 @@ export const tokens = (mode) => ({
             800: "#2a2d64",
             900: "#151632",
         },
+        carouselText: {
+            100: "#de3349" 
+        },
     } : {
         grey: {
             100: "#141414",
@@ -116,6 +119,9 @@ export const tokens = (mode) => ({
             800: "#c3c6fd",
             900: "#e1e2fe",
         },
+        carouselText: {
+            100: "#de3349" 
+        },
     }),
 });
 
@@ -161,32 +167,36 @@ export const themeSettings = (mode) => {
             }),
         },
         typography: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 12,
-        h1: {
             fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-            fontSize: 40,
-        },
-        h2: {
-            fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-            fontSize: 32,
-        },
-        h3: {
-            fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-            fontSize: 24,
-        },
-        h4: {
-            fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-            fontSize: 20,
-        },
-        h5: {
-            fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-            fontSize: 16,
-        },
-        h6: {
-            fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-            fontSize: 14,
-        },
+            fontSize: 12,
+            carousel: {
+                fontFamily: ["Cinzel", "sans-serif"].join(","),
+                fontSize: 48,
+            },
+            h1: {
+                fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+                fontSize: 40,
+            },
+            h2: {
+                fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+                fontSize: 32,
+            },
+            h3: {
+                fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+                fontSize: 24,
+            },
+            h4: {
+                fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+                fontSize: 20,
+            },
+            h5: {
+                fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+                fontSize: 16,
+            },
+            h6: {
+                fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+                fontSize: 14,
+            },
         },
     };
 };

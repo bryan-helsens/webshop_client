@@ -1,0 +1,1 @@
+export const IMAGE_STORAGE_URL = "http://localhost:8000/storage/images/products/"
