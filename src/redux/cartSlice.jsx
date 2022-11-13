@@ -9,12 +9,18 @@ const initialState = {
     cart: cart,
     items: [],
     totalPrice: 0,
+    userInfo: [],
 }
 
 export const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+
+        setUserData: (state, action) => {
+            state.userInfo = action.payload;
+        },
+
         setItems: (state, action) => {
             state.items = action.payload;
         },
@@ -88,6 +94,7 @@ export const {
     decreaseCount,
     setIsCartOpen,
     calculateTotalPrice,
+    setUserData
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

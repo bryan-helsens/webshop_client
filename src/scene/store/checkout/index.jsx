@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import Shipping from './Shipping';
@@ -10,6 +10,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import CartTable from './CartTable';
 import BtnCheckout from '../../../components/button/ButtonChekout';
 import BtnBack from '../../../components/button/ButtonBack';
+import { setUserData } from '../../../redux/cartSlice';
 
 const stripePromise = loadStripe(
   process.env.REACT_APP_KEY
@@ -97,6 +98,7 @@ const steps = ['Cart', 'Billing', 'Payment', 'Done'];
 const Checkout = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const dispatch = useDispatch()
 
   const [activeStep, setActiveStep] = useState(0)
   const cart = useSelector((state) => state.cart.cart);
@@ -108,11 +110,15 @@ const Checkout = () => {
 
     setActiveStep(activeStep + 1);
 
-    if (isFirstStep && values.shippingAddress.isSameAddress) {
-      actions.setFieldValue('shippingAddress', {
+    if (isSecondStep && values.shippingAddress.isSameAddress) {
+      actions.setFieldValue("shippingAddress", {
         ...values.billingAddress,
         isSameAddress: true,
-      })
+      });
+    }
+
+    if (isSecondStep || isthirdStep) {
+      dispatch(setUserData(values))
     }
 
   /*   if (isSecondStep){
