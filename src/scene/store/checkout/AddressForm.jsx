@@ -1,4 +1,4 @@
-import { Box, TextField, useMediaQuery, useTheme } from '@mui/material'
+import { Box, styled, TextField, useMediaQuery, useTheme } from '@mui/material'
 import { getIn } from 'formik'
 import React from 'react'
 import { tokens } from '../../../theme';
@@ -44,7 +44,10 @@ const AddressForm = ({
             name={formattedName("firstName")}
             error={formattedError("firstName")}
             helperText={formattedHelper("firstName")}
-            sx={{ gridColumn: "span 2" }}
+            color="secondary"
+            sx={{ 
+                gridColumn: "span 2",
+            }}
         />
         <TextField
             fullWidth
@@ -56,6 +59,7 @@ const AddressForm = ({
             name={formattedName("lastName")}
             error={formattedError("lastName")}
             helperText={formattedHelper("lastName")}
+            color="secondary"
             sx={{ gridColumn: "span 2" }}
         />
         <TextField
@@ -68,6 +72,7 @@ const AddressForm = ({
             name={formattedName("country")}
             error={formattedError("country")}
             helperText={formattedHelper("country")}
+            color="secondary"
             sx={{ gridColumn: "span 4" }}
         />
         <TextField
@@ -80,6 +85,7 @@ const AddressForm = ({
             name={formattedName("street1")}
             error={formattedError("street1")}
             helperText={formattedHelper("street1")}
+            color="secondary"
             sx={{ gridColumn: "span 2" }}
         />
         <TextField
@@ -92,6 +98,7 @@ const AddressForm = ({
             name={formattedName("street2")}
             error={formattedError("street2")}
             helperText={formattedHelper("street2")}
+            color="secondary"
             sx={{ gridColumn: "span 2" }}
         />
         <TextField
@@ -104,6 +111,7 @@ const AddressForm = ({
             name={formattedName("city")}
             error={formattedError("city")}
             helperText={formattedHelper("city")}
+            color="secondary"
             sx={{ gridColumn: "span 2" }}
         />
         <TextField
@@ -116,6 +124,7 @@ const AddressForm = ({
             name={formattedName("state")}
             error={formattedError("state")}
             helperText={formattedHelper("state")}
+            color="secondary"
             sx={{ gridColumn: "1fr" }}
         />
         <TextField
@@ -128,6 +137,7 @@ const AddressForm = ({
             name={formattedName("zipCode")}
             error={formattedError("zipCode")}
             helperText={formattedHelper("zipCode")}
+            color="secondary"
             sx={{ gridColumn: "1fr" }}
         />
     </Box>

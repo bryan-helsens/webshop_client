@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, useTheme } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import React from 'react'
 
 const Payment = ({
@@ -19,6 +19,7 @@ const Payment = ({
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={!!touched.email && !!errors.email}
+                color="secondary"
                 sx={{ gridColumn: "span 4", marginBottom: "15px" }}
             />
 
@@ -32,6 +33,7 @@ const Payment = ({
                 name="phoneNumber"
                 error={!!touched.phoneNumber && !!errors.phoneNumber}
                 helperText={!!touched.phoneNumber && !!errors.phoneNumber}
+                color="secondary"
                 sx={{ gridColumn: "span 4" }}
             />
         </Box>

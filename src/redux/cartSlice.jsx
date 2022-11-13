@@ -87,6 +87,7 @@ export const {
     increaseCount,
     decreaseCount,
     setIsCartOpen,
+    calculateTotalPrice,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Step, StepLabel, Stepper, useTheme } from '@mui/material';
+import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -7,6 +7,9 @@ import * as yup from "yup";
 import Shipping from './Shipping';
 import Payment from './Payment';
 import { loadStripe } from '@stripe/stripe-js'
+import CartTable from './CartTable';
+import BtnCheckout from '../../../components/button/ButtonChekout';
+import BtnBack from '../../../components/button/ButtonBack';
 
 const stripePromise = loadStripe(
   process.env.REACT_APP_KEY
@@ -89,6 +92,8 @@ const checkoutScheme = [
   }),
 ]
 
+const steps = ['Cart', 'Billing', 'Payment', 'Done'];
+
 const Checkout = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -97,9 +102,11 @@ const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
   const isFirstStep = activeStep === 0
   const isSecondStep = activeStep === 1
+  const isthirdStep = activeStep === 2
 
   const handleFormSubmit = async (values, actions) => {
-    setActiveStep(activeStep + 1)
+
+    setActiveStep(activeStep + 1);
 
     if (isFirstStep && values.shippingAddress.isSameAddress) {
       actions.setFieldValue('shippingAddress', {
@@ -108,14 +115,14 @@ const Checkout = () => {
       })
     }
 
-    if (isSecondStep){
+  /*   if (isSecondStep){
       makePayment(values)
-    }
+    } */
 
     actions.setTouched({});
   }
 
-  const makePayment = async (values) => {
+/*   const makePayment = async (values) => {
     const stripe = await stripePromise;
     const requestBody = {
       userName: [values.firstName, values.lastName].join(' '),
@@ -127,24 +134,38 @@ const Checkout = () => {
     }
 
     const response = await fetch()
+  } */
+
+  const handleStep = (step) => () => {
+    setActiveStep(step)
   }
 
   return (
     <Box width="80%" m="100px auto">
       <Stepper activeStep={activeStep} sx={{ m: "20px 0" }}>
-        <Step>
-          <StepLabel>Billing</StepLabel>
-        </Step>
-        <Step>
-          <StepLabel>Payment</StepLabel>
-        </Step>
+        {steps.map((label, i) => (
+          <Step key={label}
+          
+            sx={{
+              "& .Mui-active, & .Mui-completed": { color: `${colors.redAccent[500]} !important`}
+            }}
+          > 
+            <StepButton color="inherit" onClick={handleStep(i)}>{label}</StepButton>
+          </Step>
+        ))}
       </Stepper>
+
+        {isFirstStep ? (
+          <CartTable />
+        ) : (
+          <></>
+        )}
 
       <Box>
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
-          validationSchema={checkoutScheme[activeStep]}
+          validationSchema={checkoutScheme[activeStep - 1]}
         >
           {({
             values,
@@ -156,7 +177,7 @@ const Checkout = () => {
             setFieldValue,
           }) => (
             <form onSubmit={handleSubmit}>
-              {isFirstStep && (
+              {isSecondStep && (
                 <Shipping
                   values={values}
                   errors={errors}
@@ -167,7 +188,7 @@ const Checkout = () => {
                 />
               )}
 
-              {isSecondStep && (
+              {isthirdStep && (
                 <Payment
                   values={values}
                   errors={errors}
@@ -179,47 +200,13 @@ const Checkout = () => {
               )}
 
               <Box display="flex" justifyContent="space-between" gap="50px">
-                {isSecondStep && (
-                  <Button
-                    fullWidth
-                    color="primary"
-                    variant="contained"
-                    sx={{
-                      backgroundColor: colors.primary[100],
-                      boxShadow: "none",
-                      color: colors.primary[900],
-                      borderRadius: 0,
-                      padding: "15px 40px",
-                      "&:hover": {
-                        backgroundColor: colors.primary[900],
-                        color: colors.primary[100],
-                      }
-                    }}
-                    onClick={() => setActiveStep(activeStep - 1)}
-                  >
-                    Back
-                  </Button>
+                {isthirdStep || isSecondStep ? (
+                  <BtnBack step={activeStep} setActiveStep={setActiveStep}  />
+                ) : (
+                  <></>
                 )}
-                <Button
-                  fullWidth
-                  type="submit"
-                  color="primary"
-                  variant="contained"
-                  sx={{
-                    backgroundColor: colors.primary[100],
-                    boxShadow: "none",
-                    color: colors.primary[900],
-                    borderRadius: 0,
-                    padding: "15px 40px",
-                    "&:hover": {
-                      backgroundColor: colors.primary[900],
-                      color: colors.primary[100],
-                    }
-                  }}
-                  onClick={() => setActiveStep(activeStep - 1)}
-                >
-                  {isFirstStep ? "Next" : "Place Order"}
-                </Button>
+           
+                <BtnCheckout step={activeStep} setActiveStep={setActiveStep} />
               </Box>
             </form>
           )}

@@ -22,11 +22,10 @@ const Shipping = ({
             <AddressForm 
                 type="billingAddress"
                 values={values.billingAddress}
-                errors={errors}
                 touched={touched}
+                errors={errors}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
-                setFieldValue={setFieldValue}
             />
         </Box>
 
@@ -39,9 +38,9 @@ const Shipping = ({
                         sx={{ color: `${colors.primary[100]} !important`}}
                         value={values.shippingAddress.isSameAddress}
                         onChange={() => setFieldValue(
-                            "shipppingAddress.isSameAddress",
+                            "shippingAddress.isSameAddress",
                             !values.shippingAddress.isSameAddress
-                        )}
+                          )}
                     />
                 }
             />
