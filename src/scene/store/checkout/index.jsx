@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import CartTable from './CartTable';
 import BtnCheckout from '../../../components/button/ButtonChekout';
 import BtnBack from '../../../components/button/ButtonBack';
 import { setUserData } from '../../../redux/cartSlice';
+import { placeOrder } from '../../../services/OrderService';
 
 const stripePromise = loadStripe(
   process.env.REACT_APP_KEY
@@ -101,7 +102,9 @@ const Checkout = () => {
   const dispatch = useDispatch()
 
   const [activeStep, setActiveStep] = useState(0)
-  const cart = useSelector((state) => state.cart.cart);
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+  const cart = useSelector((state) => state.cart);
   const isFirstStep = activeStep === 0
   const isSecondStep = activeStep === 1
   const isthirdStep = activeStep === 2
@@ -121,11 +124,37 @@ const Checkout = () => {
       dispatch(setUserData(values))
     }
 
+    if (isthirdStep){
+      saveOrder();
+    }
+
   /*   if (isSecondStep){
       makePayment(values)
     } */
 
     actions.setTouched({});
+  }
+
+  const saveOrder = async () => {
+      try {
+        
+        const res = await placeOrder(cart);
+        console.log(res);
+
+        if (res){
+
+            setSuccess(true);
+        }
+
+      } catch (err) {
+        setSuccess(false);
+
+        if (!err?.response) {
+            setErrMsg('No Server Response');
+        } else {
+            setErrMsg(err.response.data["message"])
+        }
+      }
   }
 
 /*   const makePayment = async (values) => {
@@ -145,6 +174,12 @@ const Checkout = () => {
   const handleStep = (step) => () => {
     setActiveStep(step)
   }
+
+  useEffect(() => {
+    setErrMsg('')
+  
+  }, [])
+  
 
   return (
     <Box width="80%" m="100px auto">
