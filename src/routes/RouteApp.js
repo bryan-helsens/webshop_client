@@ -16,6 +16,7 @@ import Footer from '../scene/global/Footer'
 import ItemDetails from '../scene/store/itemDetails'
 import Checkout from '../scene/store/checkout'
 import Confirmation from '../scene/store/checkout/confirmation'
+import Settings from '../scene/user'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -50,6 +51,9 @@ const RouteApp = () => {
                 <Route path="/product/:itemID" element={<ItemDetails />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<Confirmation />} />
+
+
+                <Route path="/user-settings" element={<Settings />} />
 
 
                 {/* catch all */}
