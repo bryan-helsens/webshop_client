@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Typography } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Paper, Typography } from '@mui/material'
 import { Formik } from 'formik'
 import React, { useEffect } from 'react'
 import * as yup from "yup";
@@ -6,7 +6,7 @@ import UserForm from './forms/UserForm';
 import ButtonUserSettings from '../../components/button/ButtonUserSettings';
 import { useState } from 'react';
 import AddressList from './AddressList';
-import { getMyInformation, updateAccount } from '../../services/UserService';
+import { getMyInformation, getUserAddresses, updateAccount } from '../../services/UserService';
 
 const initialValues = {
     user: {
@@ -25,16 +25,17 @@ const checkoutScheme = [
             email: yup.string().email("Invalid email").required("required"),
             phone: yup.string().required("required"),
         }),
-        test: yup.object().shape({
+        addresses: yup.object().shape({
+            title: yup.string().required("required"),
             firstName: yup.string().required("required"),
             lastName: yup.string().required("required"),
+            street: yup.string().required("required"),
+            number: yup.number().integer().required("required"),
             country: yup.string().required("required"),
-            street1: yup.string().required("required"),
-            street2: yup.string(),
             city: yup.string().required("required"),
-            state: yup.string().required("required"),
             zipCode: yup.string().required("required"),
-      })
+            billing_address: yup.boolean()
+        })
     })
 ]
 
@@ -43,9 +44,11 @@ const Forms = ({ selected, labels }) => {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false);
     const [errMsg, setErrMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
 
 
     const isAccount = selected === "account"
+    const isAddress = selected === "address"
 
  /*    useEffect(() => {
         setFormValues(data);
@@ -57,12 +60,26 @@ const Forms = ({ selected, labels }) => {
         setFormValues(res);
     }
 
+    const getAddresses = async() => {
+        const res = await getUserAddresses()
+        console.log(res.addresses);
+        setFormValues(res);
+    }
+
     useEffect(() => {
         setLoading(true)
-        getUserData()
+
+        if (isAccount) {
+            getUserData()
+        }
+
+        if (isAddress){
+            getAddresses()
+        }
+
 
         setLoading(false)
-    }, [])
+    }, [selected])
 
 
     
@@ -89,6 +106,7 @@ const Forms = ({ selected, labels }) => {
 
             if (res){
                 setSuccess(true);
+                setSuccessMsg(res.message);
             }
         } catch (error) {
             setSuccess(false);
@@ -104,12 +122,31 @@ const Forms = ({ selected, labels }) => {
   return (
     <Box width="80%">
         <Paper elevation={0} sx={{ padding: "30px" }}>
-            <Typography variant="h3" mb="20px">General Info</Typography>
+
+            <Typography variant="h2" mb="20px" fontWeight="bold">{selected.toUpperCase()}</Typography>
+
+            <Box sx={{ 
+                visibility: errMsg || success ? "visible" : "hidden",
+                marginBottom: errMsg || success ? "15px" : 0,
+                height: errMsg || success ? "auto" : 0,
+            }} >
+                {success ? (
+                    <Alert severity="success" sx={{ textAlign: 'left', fontSize: "0.9rem" }}>
+                        <AlertTitle sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>Success</AlertTitle>
+                        {successMsg}
+                    </Alert>
+                ) : (
+                    <Alert severity="error" sx={{ textAlign: 'left', fontSize: "0.9rem" }}>
+                        <AlertTitle sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>Error</AlertTitle>
+                        {errMsg}
+                    </Alert>
+                )}
+            </Box>
 
             <Formik
                 onSubmit={handleFormSubmit}
                 initialValues={formValues || initialValues}
-                validationSchema={checkoutScheme.user}
+                validationSchema={checkoutScheme[selected]}
                 enableReinitialize
             >
                {({
@@ -123,7 +160,7 @@ const Forms = ({ selected, labels }) => {
                 }) => (
                     <form onSubmit={handleSubmit}>
 
-                        {selected === labels[0] && (
+                        {isAccount && (
                             <UserForm
                                 values={values.user}
                                 errors={errors}
@@ -134,9 +171,9 @@ const Forms = ({ selected, labels }) => {
                             />
                         )}
 
-                        {selected === labels[2] && (
+                        {isAddress && (
                             <AddressList
-                                values={values.address}
+                                values={values.addresses}
                                 errors={errors}
                                 touched={touched}
                                 handleBlur={handleBlur}

@@ -3,6 +3,10 @@ import { getIn } from 'formik';
 import React from 'react'
 import { tokens } from '../../../theme';
 
+const capitalizeFirst = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 const UserForm = ({  values, errors, touched, handleBlur, handleChange, setFieldValue }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -35,7 +39,7 @@ const UserForm = ({  values, errors, touched, handleBlur, handleChange, setField
             label="First Name"
             onBlur={handleBlur}
             onChange={handleChange}
-            value={values.firstName}
+            value={capitalizeFirst(values.firstName)}
             name={formattedName("firstName")}
             error={formattedError("firstName")}
             helperText={formattedHelper("firstName")}
@@ -50,7 +54,7 @@ const UserForm = ({  values, errors, touched, handleBlur, handleChange, setField
             label="Last Name"
             onBlur={handleBlur}
             onChange={handleChange}
-            value={values.lastName}
+            value={capitalizeFirst(values.lastName)}
             name={formattedName("lastName")}
             error={formattedError("lastName")}
             helperText={formattedHelper("lastName")}

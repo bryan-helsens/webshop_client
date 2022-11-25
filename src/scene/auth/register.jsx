@@ -24,7 +24,7 @@ const userSchema = yup.object().shape({
 
 const capitalizeFirst = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
-  };
+};
 
 const Register = () => {
     const [errMsg, setErrMsg] = useState('');
