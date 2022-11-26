@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Paper, Typography } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Paper, Typography, useTheme } from '@mui/material'
 import { Formik } from 'formik'
 import React, { useEffect } from 'react'
 import * as yup from "yup";
@@ -7,6 +7,16 @@ import ButtonUserSettings from '../../components/button/ButtonUserSettings';
 import { useState } from 'react';
 import AddressList from './AddressList';
 import { getMyInformation, getUserAddresses, updateAccount } from '../../services/UserService';
+import { tokens } from '../../theme';
+import AddressFromDialog from '../../components/AddressFormDialog';
+import AddressForm from './forms/AddressForm';
+import { Link } from 'react-router-dom';
+
+const options = {
+    option1: "Mr.",
+    option2: "Mrs.",
+    option3: "None",
+}
 
 const initialValues = {
     user: {
@@ -15,6 +25,17 @@ const initialValues = {
       email: "",
       phone: "",
     },
+    addresses: {
+        title: options.option1.toString(),
+        firstName: "",
+        lastName: "",
+        street: "",
+        number: 0,
+        country: "",
+        city: "",
+        zipCode: "",
+        billing_address: false,
+    }
 }
 
 const checkoutScheme = [
@@ -40,19 +61,28 @@ const checkoutScheme = [
 ]
 
 const Forms = ({ selected, labels }) => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
     const [formValues, setFormValues] = useState(null)
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false);
     const [errMsg, setErrMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
 
+    const [open, setOpen] = useState(false)
+
 
     const isAccount = selected === "account"
     const isAddress = selected === "address"
 
- /*    useEffect(() => {
-        setFormValues(data);
-    }, []) */
+    const handleOpen = () =>{
+        setOpen(true)
+    }
+
+    const handleClose = () =>{
+        setOpen(false)
+    }
 
     const getUserData = async() => {
         const res = await getMyInformation()
@@ -94,6 +124,10 @@ const Forms = ({ selected, labels }) => {
 
         console.log(values, "values");
         console.log(actions, "actions");
+    }
+
+    const addAddress = async (address) => {
+        console.log(address);
     }
 
 
@@ -172,14 +206,48 @@ const Forms = ({ selected, labels }) => {
                         )}
 
                         {isAddress && (
-                            <AddressList
-                                values={values.addresses}
-                                errors={errors}
-                                touched={touched}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                setFieldValue={setFieldValue}
-                            />
+                            <Box>
+                                <Button
+                                    sx={{
+                                        minWidth: '100px',
+                                        backgroundColor: colors.redAccent[500],
+                                        fontSize: "0.9rem",
+                                        float: 'right',
+                                        "&:hover": {
+                                            backgroundColor: colors.primary[100],
+                                            color: colors.primary[900],
+                                        }
+                                    }}
+                                    variant="contained"
+                                    component={Link} to="/user-settings/add-address"
+                                    //onClick={handleOpen}
+                                >ADD ADDRESS</Button>
+
+                                <AddressList
+                                    values={values.addresses}
+                                    errors={errors}
+                                    touched={touched}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                />
+
+                                <AddressFromDialog
+                                    title="Add Address"
+                                    open={open}
+                                    setOpen={setOpen}
+                                    onConfirm={addAddress}
+                                >
+                                    <AddressForm
+                                        values={values.addresses}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                </AddressFromDialog>
+                            </Box>
                         )}
 
 

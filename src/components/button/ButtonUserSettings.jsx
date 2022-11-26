@@ -11,7 +11,8 @@ const ButtonUserSettings = () => {
         type="submit"
         variant="contained"
         sx={{
-            width: '50%',
+            width: "30%",
+            float: "right",
             m: "auto",
             p: "10px",
             backgroundColor: colors.redAccent[500],

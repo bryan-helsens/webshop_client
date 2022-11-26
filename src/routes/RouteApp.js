@@ -17,6 +17,7 @@ import ItemDetails from '../scene/store/itemDetails'
 import Checkout from '../scene/store/checkout'
 import Confirmation from '../scene/store/checkout/confirmation'
 import Settings from '../scene/user'
+import AddAddress from '../scene/user/AddAddress'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -54,6 +55,7 @@ const RouteApp = () => {
 
 
                 <Route path="/user-settings" element={<Settings />} />
+                <Route path="/user-settings/add-address" element={<AddAddress />} />
 
 
                 {/* catch all */}

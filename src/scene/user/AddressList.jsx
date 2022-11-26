@@ -1,4 +1,4 @@
-import { Box, Divider, Link, Paper, Typography, useTheme } from '@mui/material'
+import { Box, Button, Divider, Link, Paper, Typography, useTheme } from '@mui/material'
 import React, { useRef } from 'react'
 import Header from '../../components/Header'
 import { tokens } from '../../theme';
@@ -37,10 +37,13 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
   return (
     <Box>
         <Box mb="5%" width="100%">
+
             <Header title="" subtitle="Your Address"  />
             {
                 mainAddress?.map((item) => (
                     <Paper elevation={5} sx={{ p: "2% 3%", m: "2% 2%" }} key={item?.id}>
+                        <Typography variant='h4' fontWeight="bold" mb="5px">Address from {item?.firstName} {item?.lastName}</Typography>
+
                         <Box display="inline-block">
                             <Typography>{item?.title}. {item?.firstName} {item?.lastName}</Typography>
                             <Typography>{item?.street} {item?.number}</Typography>
@@ -102,6 +105,8 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
             {
                 values && values?.map((item) => (
                     <Paper elevation={5} sx={{ p: "2% 3%", m: "2% 2%" }} key={item?.id}>
+                        <Typography variant='h4' fontWeight="bold" mb="5px">Address from {item?.firstName} {item?.lastName}</Typography>
+                        
                         <Box display="inline-block">
                             <Typography>{item?.title}. {item?.firstName} {item?.lastName}</Typography>
                             <Typography>{item?.street} {item?.number}</Typography>
