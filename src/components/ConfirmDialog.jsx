@@ -16,6 +16,7 @@ const ConfirmDialog = (props) => {
         <DialogActions>
             <Button
                 variant="contained"
+                type="submit"
                 onClick={() => {
                     setOpen(false);
                     onConfirm();
