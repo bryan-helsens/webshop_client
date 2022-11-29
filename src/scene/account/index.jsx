@@ -8,6 +8,7 @@ import Logout from '@mui/icons-material/Logout';
 import { tokens } from '../../theme'
 import AccountForm from './AccountForms';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRef } from 'react';
 
 
 const data = [
@@ -24,6 +25,7 @@ const AccountSettings = () => {
     const colors = tokens(theme.palette.mode);
     const navigate = useNavigate();
     const { item } = useParams()
+    const addressRef = useRef('');
 
     const [selected, setSelected] = useState("");
 
@@ -42,10 +44,10 @@ const AccountSettings = () => {
     }
 
   return (
-    <Box width="80%" margin="80px auto" textAlign="left">
+    <Box width="80%" margin="80px auto" textAlign="left"  ref={addressRef}>
         <Header title="Account Settings" subtitle="Change your profile and account settings"/>
         
-        <Box display="flex">
+        <Box display="flex" >
             <Paper elevation={0} sx={{ padding: "20px", width: "100%", display: "flex"}} >  
               <Box sx={{ maxWidth: 256, padding: "20px" }}>
                 {data.map((item) => (
@@ -83,7 +85,7 @@ const AccountSettings = () => {
                 <Box width="80%">
                     <Typography variant="h2" mb="20px" fontWeight="bold">{selected?.toUpperCase()}</Typography>
                     <Box>
-                        <AccountForm selected={selected} labels={labels}/>
+                        <AccountForm selected={selected} labels={labels} addressRef={addressRef}/>
                     </Box>
                 </Box>
             </Paper>

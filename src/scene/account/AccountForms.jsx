@@ -63,7 +63,7 @@ const addressScheme = [
 ]
 
 
-const AccountForms = ({ selected, labels }) => {
+const AccountForms = ({ selected, labels, addressRef }) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -215,6 +215,7 @@ const AccountForms = ({ selected, labels }) => {
                                 </Button>
 
                                 <AddressList
+                                    addressRef={addressRef}
                                     values={values?.addresses}
                                     errors={errors}
                                     touched={touched}

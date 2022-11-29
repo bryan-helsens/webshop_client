@@ -14,7 +14,7 @@ import { useSearchParams } from 'react-router-dom';
 import { deleteAddressByID } from '../../services/UserService';
 
 
-const AddressList = ({ values }) => {
+const AddressList = ({ values, addressRef }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -77,6 +77,8 @@ const AddressList = ({ values }) => {
                 setSuccess(true);
                 setSuccessMsg(res.message);
                 setAddresses()
+
+                addressRef.current.scrollIntoView({behavior: 'smooth'});
             }else{
                 setSuccess(false);
                 setErrMsg(res.response.data["message"])
@@ -98,12 +100,12 @@ const AddressList = ({ values }) => {
     }
 
   return (
-    <Box>
+    <Box >
         {loading ? (
             <Box>Waiting ...</Box>
         ) : (
         <>
-        <Box mb="5%" width="100%">
+        <Box mb="5%" width="100%" >
 
             <Box sx={{ 
                 visibility:  success ? "visible" : "hidden",
