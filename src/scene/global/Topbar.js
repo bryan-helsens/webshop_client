@@ -93,7 +93,7 @@ const Topbar = () => {
                         <SettingsOutlinedIcon />
                     </IconButton>
                     <IconButton>
-                        <PersonOutlinedIcon onClick={() => navigate("/user-settings")} />
+                        <PersonOutlinedIcon onClick={() => navigate("/account/settings")} />
                     </IconButton>
                     <Badge
                         badgeContent={cart.length}

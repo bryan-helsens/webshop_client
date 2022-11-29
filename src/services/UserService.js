@@ -22,7 +22,6 @@ export const getMyInformation = async () => {
 
 export const getUserAddresses = async () => {
     try {
-        
         const res = await axios.get(`${ADDRESSES_GET_URL}`);
 
         if (res?.status === 200){
@@ -37,12 +36,9 @@ export const getUserAddresses = async () => {
 
 export const updateAccount = async (user) => {
     try {
-        
         const res = await axios.put(`${UPDATE_ACCOUNT_PUT_URL}`,
             {user}
         );
-
-        console.log(res);
 
         if (res?.status === 200){
             return res?.data;
@@ -57,12 +53,9 @@ export const updateAccount = async (user) => {
 
 export const addAddress = async (address) => {
     try {
-        
         const res = await axios.post(`${ADDRESS_ADD_POST_URL}`,
             {address}
         );
-
-        console.log(res);
 
         if (res?.status === 200){
             return res?.data;

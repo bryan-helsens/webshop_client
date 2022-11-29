@@ -19,9 +19,10 @@ const AddressFromDialog = (props) => {
         <DialogActions>
             <Button
                 variant="contained"
+                type="submit"
                 onClick={() => {
                     setOpen(false);
-                    onConfirm();
+                    onConfirm()
                 }}
                 sx={{
                     backgroundColor: colors.redAccent[500],

@@ -1,32 +1,27 @@
-import { Alert, AlertTitle, Box, Button, Paper, Typography, useTheme } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, useTheme } from '@mui/material'
 import { Formik } from 'formik'
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import * as yup from "yup";
-import UserForm from './forms/UserForm';
 import ButtonUserSettings from '../../components/button/ButtonUserSettings';
-import { useState } from 'react';
-import AddressList from './AddressList';
 import { getMyInformation, getUserAddresses, updateAccount } from '../../services/UserService';
 import { tokens } from '../../theme';
-import AddressFromDialog from '../../components/AddressFormDialog';
-import AddressForm from './forms/AddressForm';
-import { Link } from 'react-router-dom';
+import AddressList from './AddressList';
+import UserForm from './Forms/UserForm';
 
-const options = {
-    option1: "Mr.",
-    option2: "Mrs.",
-    option3: "None",
+const accountInitialValues = {
+    user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+    },
 }
 
-const initialValues = {
-    user: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-    },
+const addressInitialValues = {
     addresses: {
-        title: options.option1.toString(),
+        id: 0,
+        title: "",
         firstName: "",
         lastName: "",
         street: "",
@@ -38,29 +33,38 @@ const initialValues = {
     }
 }
 
-const checkoutScheme = [
+const accountScheme = [
     yup.object().shape({
         user: yup.object().shape({
-            firstName: yup.string().required("required"),
-            lastName: yup.string().required("required"),
-            email: yup.string().email("Invalid email").required("required"),
-            phone: yup.string().required("required"),
+            firstName: yup.string().required("required").nullable(),
+            lastName: yup.string().required("required").nullable(),
+            email: yup.string().email("Invalid email").required("required").nullable(),
+            phone: yup.string().required("required").nullable(),
         }),
+    })
+]
+
+const addressScheme = [
+    yup.object().shape({
         addresses: yup.object().shape({
-            title: yup.string().required("required"),
+            id: yup.number().required("required"),
+            title: yup.string(),
             firstName: yup.string().required("required"),
             lastName: yup.string().required("required"),
             street: yup.string().required("required"),
-            number: yup.number().integer().required("required"),
+            number: yup.number().required("required"),
             country: yup.string().required("required"),
             city: yup.string().required("required"),
             zipCode: yup.string().required("required"),
-            billing_address: yup.boolean()
+            billing_address: yup.boolean(),
+            shipping_address: yup.boolean()
         })
     })
 ]
 
-const Forms = ({ selected, labels }) => {
+
+const AccountForms = ({ selected, labels }) => {
+
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -70,73 +74,54 @@ const Forms = ({ selected, labels }) => {
     const [errMsg, setErrMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
 
-    const [open, setOpen] = useState(false)
 
+    const [initialValues, setInitialValues] = useState({});
+    const [validationScheme, setValidationScheme] = useState({});
 
-    const isAccount = selected === "account"
-    const isAddress = selected === "address"
-
-    const handleOpen = () =>{
-        setOpen(true)
-    }
-
-    const handleClose = () =>{
-        setOpen(false)
-    }
-
-    const getUserData = async() => {
-        const res = await getMyInformation()
-        console.log(res.user);
-        setFormValues(res);
-    }
-
-    const getAddresses = async() => {
-        const res = await getUserAddresses()
-        console.log(res.addresses);
-        setFormValues(res);
-    }
+    const isAccount = selected === labels[0]
+    const isAddress = selected ===  labels[2]
 
     useEffect(() => {
         setLoading(true)
 
-        if (isAccount) {
-            getUserData()
+        switch (selected) {
+            case "account":
+                console.log("account");
+                getUserData()
+                setInitialValues(accountInitialValues)
+                setValidationScheme(accountScheme)
+                break;
+
+            case "addresses":
+                console.log("addresses");
+                getAddresses()
+                setInitialValues(addressInitialValues)
+                setValidationScheme(addressScheme)
+                setLoading(false)
+                break;
+        
+            default:
+                break;
         }
 
-        if (isAddress){
-            getAddresses()
-        }
+
+    }, [selected, isAccount, isAddress])
 
 
+    const getUserData = async() => {
+        const res = await getMyInformation()
+        setFormValues(res);
         setLoading(false)
-    }, [selected])
-
-
-    
-
-    const handleFormSubmit = async (values, actions) => {
-
-        if (isAccount){
-            console.log("account");
-
-            updateData(values);
-        }
-
-        console.log(values, "values");
-        console.log(actions, "actions");
     }
 
-    const addAddress = async (address) => {
-        console.log(address);
+    const getAddresses = async() => {
+        const res = await getUserAddresses()
+        setFormValues(res);
     }
-
 
     const updateData = async (values) => {
-
-        console.log(values, "data send");
         try {
-            const res = await updateAccount(values.user);
-            console.log(res);
+            const res = await updateAccount(values?.user);
 
             if (res){
                 setSuccess(true);
@@ -152,13 +137,17 @@ const Forms = ({ selected, labels }) => {
             }
         }
     }
+    
+
+    const handleFormSubmit = async (values, actions) => {
+        updateData(values);
+    }
 
   return (
-    <Box width="80%">
-        <Paper elevation={0} sx={{ padding: "30px" }}>
+    <Box>
 
-            <Typography variant="h2" mb="20px" fontWeight="bold">{selected.toUpperCase()}</Typography>
-
+        {loading ? (<></>) : (
+            <>
             <Box sx={{ 
                 visibility: errMsg || success ? "visible" : "hidden",
                 marginBottom: errMsg || success ? "15px" : 0,
@@ -180,10 +169,10 @@ const Forms = ({ selected, labels }) => {
             <Formik
                 onSubmit={handleFormSubmit}
                 initialValues={formValues || initialValues}
-                validationSchema={checkoutScheme[selected]}
+                validationSchema={validationScheme[0]}
                 enableReinitialize
             >
-               {({
+                {({
                     values,
                     errors,
                     touched,
@@ -193,10 +182,10 @@ const Forms = ({ selected, labels }) => {
                     setFieldValue,
                 }) => (
                     <form onSubmit={handleSubmit}>
-
+            
                         {isAccount && (
                             <UserForm
-                                values={values.user}
+                                values={values?.user}
                                 errors={errors}
                                 touched={touched}
                                 handleBlur={handleBlur}
@@ -219,53 +208,36 @@ const Forms = ({ selected, labels }) => {
                                         }
                                     }}
                                     variant="contained"
-                                    component={Link} to="/user-settings/add-address"
-                                    //onClick={handleOpen}
-                                >ADD ADDRESS</Button>
+                                    component={Link} 
+                                    to="/user-settings/add-address"
+                                >
+                                    ADD ADDRESS
+                                </Button>
 
                                 <AddressList
-                                    values={values.addresses}
+                                    values={values?.addresses}
                                     errors={errors}
                                     touched={touched}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                     setFieldValue={setFieldValue}
                                 />
-
-                                <AddressFromDialog
-                                    title="Add Address"
-                                    open={open}
-                                    setOpen={setOpen}
-                                    onConfirm={addAddress}
-                                >
-                                    <AddressForm
-                                        values={values.addresses}
-                                        errors={errors}
-                                        touched={touched}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        setFieldValue={setFieldValue}
-                                    />
-                                </AddressFromDialog>
                             </Box>
                         )}
+                
 
-
-                    
-                        {selected === labels[0] && (
-                            <Box display="flex" justifyContent="space-between" gap="50px" mt="20px">
-                                <ButtonUserSettings>save</ButtonUserSettings>
-                            </Box>
-                        )}
-                 
+                        <Box display="flex" justifyContent="space-between" gap="50px" mt="20px">
+                            <ButtonUserSettings>save</ButtonUserSettings>
+                        </Box>
+        
                     </form>
                 )}
             </Formik>
-
-        </Paper>
-     
+            </>
+        )}
     </Box>
+    
   )
 }
 
-export default Forms
+export default AccountForms

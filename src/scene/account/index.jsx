@@ -1,30 +1,48 @@
-import { Box, ListItemButton, ListItemIcon, ListItemText, Paper, useTheme } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, ListItemButton, ListItemIcon, ListItemText, Paper, Typography, useTheme } from '@mui/material'
+import React, { useState, useEffect } from 'react'
 import Header from '../../components/Header'
-
 import Person from '@mui/icons-material/Person';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import ManageAccounts from '@mui/icons-material/ManageAccounts';
 import Logout from '@mui/icons-material/Logout';
 import { tokens } from '../../theme'
-import Forms from './Forms'
+import AccountForm from './AccountForms';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const data = [
-  {icon: <Person />, label: "Account", key: "account"},
-  {icon: <ShoppingBag />, label: "Orders", key: "orders"},
-  {icon: <ManageAccounts />, label: "Account Data & Addresses", key: "address"},
-  {icon: <Logout />, label: "Logout", key: "logout"},
+    {icon: <Person />, label: "Account", key: "account"},
+    {icon: <ShoppingBag />, label: "Orders", key: "orders"},
+    {icon: <ManageAccounts />, label: "Account Data & Addresses", key: "addresses"},
+    {icon: <Logout />, label: "Logout", key: "logout"},
 ]
 
-const labels = ["account", "orders", "address", "logout"];
+const labels = ["account", "orders", "addresses", "logout"];
 
-const Settings = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [selected, setSelected] = useState("account");
+const AccountSettings = () => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const navigate = useNavigate();
+    const { item } = useParams()
+
+    const [selected, setSelected] = useState("");
+
+    useEffect(() => {
+        if (item === '' || item === undefined || labels.indexOf(item) < -1) {
+            setSelected('account')
+        }else{
+            setSelected(item)
+        }
+    }, [item])
+    
+
+    const goToPage = (newSelected) => {
+        navigate({pathname: '/account/settings/' + newSelected});
+        
+    }
 
   return (
-    <Box  width="80%" margin="80px auto" textAlign="left">
+    <Box width="80%" margin="80px auto" textAlign="left">
         <Header title="Account Settings" subtitle="Change your profile and account settings"/>
         
         <Box display="flex">
@@ -52,18 +70,26 @@ const Settings = () => {
                         </ListItemIcon>
                         <ListItemText
                             primary={item.label}
-                            onClick={() => setSelected(item.key)}
+                            onClick={() => {
+                                setSelected(item.key);
+                                goToPage(item.key)
+                            }}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
                     </ListItemButton>
                 ))}
-              </Box>
-
-              <Forms selected={selected} labels={labels}/>
+                </Box>
+ 
+                <Box width="80%">
+                    <Typography variant="h2" mb="20px" fontWeight="bold">{selected?.toUpperCase()}</Typography>
+                    <Box>
+                        <AccountForm selected={selected} labels={labels}/>
+                    </Box>
+                </Box>
             </Paper>
         </Box>
     </Box>
   )
 }
 
-export default Settings
+export default AccountSettings

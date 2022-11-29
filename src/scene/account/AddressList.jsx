@@ -1,5 +1,5 @@
-import { Box, Button, Divider, Link, Paper, Typography, useTheme } from '@mui/material'
-import React, { useRef } from 'react'
+import { Alert, AlertTitle, Box, Divider, Link, Paper, Typography, useTheme } from '@mui/material'
+import React from 'react'
 import Header from '../../components/Header'
 import { tokens } from '../../theme';
 import Info from '@mui/icons-material/InfoOutlined';
@@ -10,23 +10,33 @@ import Invoice from '@mui/icons-material/RequestQuote';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ConfirmDialog from '../../components/ConfirmDialog';
+import { useSearchParams } from 'react-router-dom';
 
-const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFieldValue }) => {
+
+const AddressList = ({ values }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const [searchParam] = useSearchParams()
+
+    const [success, setSuccess] = useState(searchParam.get('success'))
     const [mainAddress, setMainAddress] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [addressValues, setAddressValues] = useState([])
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [deleteID, setDeleteID] = useState(null)
+
     
     useEffect(() => {
-        const homeAddress = values?.filter(address => { return address?.pivot?.billing_address === 1 });
-        setMainAddress(homeAddress);
-
-        values?.splice(homeAddress?.id, 1)
-
+        setLoading(true)
+    
+        if (values?.id !== 0){
+            setMainAddress(values?.filter((address) =>  address?.pivot?.billing_address === 1 ));
+            setAddressValues(values?.filter((address) =>  address?.pivot?.billing_address !== 1 ))
+            setLoading(false)
+        }  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[values])
-
 
     const deleteAddress = () => {
         console.log(deleteID);
@@ -36,7 +46,29 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
 
   return (
     <Box>
+        {loading ? (
+            <Box>Waiting ...</Box>
+        ) : (
+        <>
         <Box mb="5%" width="100%">
+
+            <Box sx={{ 
+                visibility:  success ? "visible" : "hidden",
+                marginBottom:  success ? "15px" : 0,
+                height: success ? "auto" : 0,
+            }} >
+                {success === "true" ? (
+                    <Alert severity="success" sx={{ textAlign: 'left', fontSize: "0.9rem", backgroundColor: colors.greenAccent[800], }}>
+                        <AlertTitle sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>Success</AlertTitle>
+                        Successfully added your address
+                    </Alert>
+                ) : (
+                    <Alert severity="error" sx={{ textAlign: 'left', fontSize: "0.9rem", backgroundColor: colors.redAccent[800], }}>
+                        <AlertTitle sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>Error</AlertTitle>
+                        Something went wrong
+                    </Alert>
+                )}
+            </Box>
 
             <Header title="" subtitle="Your Address"  />
             {
@@ -45,7 +77,7 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
                         <Typography variant='h4' fontWeight="bold" mb="5px">Address from {item?.firstName} {item?.lastName}</Typography>
 
                         <Box display="inline-block">
-                            <Typography>{item?.title}. {item?.firstName} {item?.lastName}</Typography>
+                            <Typography>{item?.title !== null ? item.title : ''} {item?.firstName} {item?.lastName}</Typography>
                             <Typography>{item?.street} {item?.number}</Typography>
                             <Typography>{item?.zipcode} {item?.city}, {item?.country}</Typography>
                         </Box>
@@ -95,7 +127,7 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
                             )}
                         </Box>
                     </Paper>
-                ))       
+                ))     
             }
         </Box>
 
@@ -103,12 +135,12 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
             <Header title="" subtitle="Other Addresses" />
 
             {
-                values && values?.map((item) => (
+                addressValues?.id !== 0  ? addressValues?.map((item) => (
                     <Paper elevation={5} sx={{ p: "2% 3%", m: "2% 2%" }} key={item?.id}>
                         <Typography variant='h4' fontWeight="bold" mb="5px">Address from {item?.firstName} {item?.lastName}</Typography>
                         
                         <Box display="inline-block">
-                            <Typography>{item?.title}. {item?.firstName} {item?.lastName}</Typography>
+                            <Typography>{item?.title !== null ? item.title : ''} {item?.firstName} {item?.lastName}</Typography>
                             <Typography>{item?.street} {item?.number}</Typography>
                             <Typography>{item?.zipcode} {item?.city}, {item?.country}</Typography>
                         </Box>
@@ -152,7 +184,7 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
                             )}
                         </Box>
                     </Paper>
-                ))         
+                )) : <></>        
             }
 
 
@@ -165,45 +197,13 @@ const AddressList = ({ values, errors, touched, handleBlur, handleChange, setFie
                 Are you sure you want to delete this post?
             </ConfirmDialog>
 
-
-            {/* <Paper elevation={5} sx={{ p: "2% 3%", m: "2% 2%" }}>
-                <Box  display="inline-block">
-                    <Typography>Dhr. Bryan Helsens</Typography>
-                    <Typography>Rijselstraat 24</Typography>
-                    <Typography>8000 Brugge, Belgie</Typography>
-                </Box>
-
-                <Box  display="inline-block" sx={{ float: "right"}} width="50%">
-                </Box>
-             
-
-                <Divider sx={{ p: "0.5%" }} />
-
-                <Box sx={{ display: 'flex', alignContent: 'center', padding: "10px 0", color: colors.redAccent[500] }}>
-                    <Link component="button" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Edit /> Edit</Link>
-                    <Link component="button" display="flex" alignItems="flex-end" color="secondary" sx={{pr: "2%"}}><Delete /> Delete</Link>
-                    <Link component="button" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Home /> Set as Shipping Address</Link>
-                    <Link component="button" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Invoice /> Set as Billing Address</Link>
-                </Box>
-            </Paper>
-            <Paper elevation={5} sx={{ p: "2% 5%", m: "2% 2%" }}>
-                <Typography>Dhr. Bryan Helsens</Typography>
-                <Typography>Rijselstraat 24</Typography>
-                <Typography>8000 Brugge, Belgie</Typography>
-            </Paper>
-            <Paper elevation={5} sx={{ p: "2% 5%", m: "2% 2%" }}>
-                <Typography>Dhr. Bryan Helsens</Typography>
-                <Typography>Rijselstraat 24</Typography>
-                <Typography>8000 Brugge, Belgie</Typography>
-            </Paper>
-            <Paper elevation={5} sx={{ p: "2% 5%",  m: "2% 2%" }}>
-                <Typography>Dhr. Bryan Helsens</Typography>
-                <Typography>Rijselstraat 24</Typography>
-                <Typography>8000 Brugge, Belgie</Typography>
-            </Paper> */}
         </Box>
+        </>
+
+        )}
     
     </Box>
+    
   )
 }
 

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
-import User from '../components/User'
 import Dashboard from '../scene/admin'
 import Login from '../scene/auth/login'
 import Register from '../scene/auth/register'
@@ -16,8 +15,8 @@ import Footer from '../scene/global/Footer'
 import ItemDetails from '../scene/store/itemDetails'
 import Checkout from '../scene/store/checkout'
 import Confirmation from '../scene/store/checkout/confirmation'
-import Settings from '../scene/user'
-import AddAddress from '../scene/user/AddAddress'
+import AccountSettings from '../scene/account'
+import AddAddress from '../scene/account/Forms/AddAddress'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -53,8 +52,8 @@ const RouteApp = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<Confirmation />} />
 
-
-                <Route path="/user-settings" element={<Settings />} />
+                <Route path="/account/settings" element={<AccountSettings />} />
+                <Route path="/account/settings/:item" element={<AccountSettings />} />
                 <Route path="/user-settings/add-address" element={<AddAddress />} />
 
 
