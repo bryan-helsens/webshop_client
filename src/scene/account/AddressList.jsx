@@ -131,7 +131,6 @@ const AddressList = ({ values, addressRef }) => {
                 mainAddress?.map((item) => (
                     <Paper elevation={5} sx={{ p: "2% 3%", m: "2% 2%" }} key={item?.id}>
                         <Typography variant='h4' fontWeight="bold" mb="5px">Address from {item?.firstName} {item?.lastName}</Typography>
-                        <p>{item?.id}</p>
                         <Box display="inline-block">
                             <Typography>{item?.title !== null ? item.title : ''} {item?.firstName} {item?.lastName}</Typography>
                             <Typography>{item?.street} {item?.number}</Typography>
@@ -189,7 +188,6 @@ const AddressList = ({ values, addressRef }) => {
                 addressValues?.id !== 0  ? addressValues?.map((item) => (
                     <Paper elevation={5} sx={{ p: "2% 3%", m: "2% 2%" }} key={item?.id}>
                         <Typography variant='h4' fontWeight="bold" mb="5px">Address from {item?.firstName} {item?.lastName}</Typography>
-                        <p>{item?.id}</p>
                         <Box display="inline-block">
                             <Typography>{item?.title !== null ? item.title : ''} {item?.firstName} {item?.lastName}</Typography>
                             <Typography>{item?.street} {item?.number}</Typography>
