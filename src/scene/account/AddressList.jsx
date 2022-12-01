@@ -34,11 +34,11 @@ const AddressList = ({ values, addressRef }) => {
         setLoading(true)
         setSuccess(false)
 
-        const isAdded = searchParam.get('success') === 'true';
+        const successfullyExecuted = searchParam.get('success') === 'true';
 
-        if (isAdded){
+        if (successfullyExecuted){
             setSuccess(true)
-            setSuccessMsg("Successfully added a new address")
+            setSuccessMsg(searchParam.get('message'))
  
         }else{
             setSuccess(false)
@@ -57,6 +57,7 @@ const AddressList = ({ values, addressRef }) => {
             setLoading(false)
 
             searchParam.delete('success');
+            searchParam.delete('message');
             setSearchParam(searchParam);
         }  
     }

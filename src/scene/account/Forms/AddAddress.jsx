@@ -57,7 +57,8 @@ const AddAddress = () => {
 
 
         navigate({pathname: '/account/settings/addresses',  search: `?${createSearchParams({
-              success: true
+              success: true,
+              message: res.message,
           })}` 
         });
       }

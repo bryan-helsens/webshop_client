@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from '@mui/material'
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 import * as yup from "yup"
 import ButtonUserSettings from '../../../components/button/ButtonUserSettings'
 import Header from '../../../components/Header'
@@ -47,6 +47,7 @@ const EditAddress = () => {
     const [loading, setLoading] = useState(true)
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -80,10 +81,11 @@ const EditAddress = () => {
               setSuccess(true);
       
       
-              /* navigate({pathname: '/account/settings/addresses',  search: `?${createSearchParams({
-                    success: true
+              navigate({pathname: '/account/settings/addresses',  search: `?${createSearchParams({
+                    success: true,
+                    message: res.message,
                 })}` 
-              }); */
+              });
             }
             
         } catch (err) {
