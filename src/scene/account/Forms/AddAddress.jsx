@@ -17,7 +17,7 @@ const initialValues = {
       number: 0,
       country: "",
       city: "",
-      zipCode: "",
+      zipcode: "",
       billing_address: false,
       shipping_address: false,
 }
@@ -31,7 +31,7 @@ const validationScheme = [
       number: yup.number().required("required"),
       country: yup.string().required("required"),
       city: yup.string().required("required"),
-      zipCode: yup.string().required("required"),
+      zipcode: yup.string().required("required"),
       billing_address: yup.boolean(),
       shipping_address: yup.boolean()
   })

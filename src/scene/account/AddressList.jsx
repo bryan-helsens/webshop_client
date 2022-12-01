@@ -157,7 +157,7 @@ const AddressList = ({ values, addressRef }) => {
                         <Divider sx={{ p: "0.5%" }} />
 
                         <Box sx={{ display: 'flex', alignContent: 'center', padding: "10px 0", color: colors.redAccent[500], "& > [disabled]": { color: "grey", cursor: "default", textDecoration: "none"} }}>
-                            <Link href={'/user-settings/addresses/' + item?.id} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}} ><Edit /> Edit</Link>
+                            <Link href={'/user-settings/address/' + item?.id} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}} ><Edit /> Edit</Link>
                             <Link onClick={() => {
                                 setConfirmOpen(true);
                                 setSelectedAddress(item);
@@ -215,7 +215,7 @@ const AddressList = ({ values, addressRef }) => {
                         <Divider sx={{ p: "0.5%" }} />
 
                         <Box sx={{ display: 'flex', alignContent: 'center', padding: "10px 0", color: colors.redAccent[500], "& > [disabled]": { color: "grey", cursor: "default", textDecoration: "none"} }}>
-                            <Link href={'/user-settings/addresses/' + item?.id} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}} ><Edit /> Edit</Link>
+                            <Link href={'/user-settings/address/' + item?.id} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}} ><Edit /> Edit</Link>
                             <Link onClick={() => {
                                 setConfirmOpen(true);
                                 setSelectedAddress(item);

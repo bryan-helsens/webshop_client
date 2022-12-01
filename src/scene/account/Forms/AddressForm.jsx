@@ -1,6 +1,7 @@
 import { Box, Checkbox, FormControlLabel, FormLabel, Radio, TextField, useMediaQuery, useTheme } from '@mui/material';
 import { useField } from 'formik';
 import React from 'react'
+import { useEffect } from 'react';
 import { tokens } from '../../../theme';
 
 
@@ -17,6 +18,8 @@ const MyRadio = ({ label, ...props }) => {
 
 const MyCheckbox = ({ label, ...props }) => {
     const [field, meta] = useField(props);
+
+    console.log(field);
 
     return (
         <FormControlLabel
@@ -57,6 +60,15 @@ const AddressForm = ({ values, errors, touched, handleBlur, handleChange, setFie
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery('(min-width:600px)')
+
+    if (values.title === null) {
+        values.title = ''
+    }
+
+    console.log(values.shipping_address, "address");
+
+
+    
 
   return (
     <Box
@@ -122,7 +134,7 @@ const AddressForm = ({ values, errors, touched, handleBlur, handleChange, setFie
 
 
         <MyTextField
-            name={'zipCode'}
+            name={'zipcode'}
             type="input"  
             columnWidth={1}
         />

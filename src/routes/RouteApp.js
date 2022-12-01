@@ -17,6 +17,7 @@ import Checkout from '../scene/store/checkout'
 import Confirmation from '../scene/store/checkout/confirmation'
 import AccountSettings from '../scene/account'
 import AddAddress from '../scene/account/Forms/AddAddress'
+import EditAddress from '../scene/account/Forms/EditAddress'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -55,6 +56,7 @@ const RouteApp = () => {
                 <Route path="/account/settings" element={<AccountSettings />} />
                 <Route path="/account/settings/:item" element={<AccountSettings />} />
                 <Route path="/user-settings/add-address" element={<AddAddress />} />
+                <Route path="/user-settings/address/:id" element={<EditAddress />} />
 
 
                 {/* catch all */}
