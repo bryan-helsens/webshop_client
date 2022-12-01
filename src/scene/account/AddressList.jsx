@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Divider, Link, Paper, Typography, useTheme } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Divider, Link, Paper, Typography, useTheme } from '@mui/material'
 import React from 'react'
 import Header from '../../components/Header'
 import { tokens } from '../../theme';
@@ -10,14 +10,15 @@ import Invoice from '@mui/icons-material/RequestQuote';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ConfirmDialog from '../../components/ConfirmDialog';
-import { useSearchParams } from 'react-router-dom';
-import { deleteAddressByID } from '../../services/UserService';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { deleteAddressByID, switchTypeAddress } from '../../services/UserService';
 
 
 const AddressList = ({ values, addressRef }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const navigate = useNavigate();
     const [searchParam, setSearchParam] = useSearchParams()
     const [selectedAddress, setSelectedAddress] = useState({})
     const [success, setSuccess] = useState(false)
@@ -47,6 +48,7 @@ const AddressList = ({ values, addressRef }) => {
 
         setAddresses()
 
+
     },[values])
 
 
@@ -59,6 +61,8 @@ const AddressList = ({ values, addressRef }) => {
             searchParam.delete('success');
             searchParam.delete('message');
             setSearchParam(searchParam);
+
+            addressRef.current.scrollIntoView({behavior: 'smooth'});
         }  
     }
 
@@ -100,6 +104,44 @@ const AddressList = ({ values, addressRef }) => {
         }
     }
 
+
+    const switchType = async (id, type) => {
+        setSuccess(false)
+
+        try {
+            const res = await switchTypeAddress(id, type)
+            console.log(res);
+
+            if (res){
+                navigate({ pathname: '/account/settings/addresses',  search: `?${createSearchParams({
+                    success: true,
+                    message: "Successfully changed your " + type.replace("_"," "),
+                })}` 
+              });
+
+              navigate(0);
+
+
+            }else{
+                setSuccess(false);
+                setErrMsg(res.response.data["message"])
+            }
+
+ 
+            
+        } catch (error) {
+            setSuccess(false);
+     
+            console.log(error);
+
+            if (!error?.response) {
+                setErrMsg('No Server Response');
+            } else {
+                setErrMsg(error.response.data["message"])
+            }
+        }
+    }
+
   return (
     <Box >
         {loading ? (
@@ -112,6 +154,8 @@ const AddressList = ({ values, addressRef }) => {
                 visibility:  success ? "visible" : "hidden",
                 marginBottom:  success ? "15px" : 0,
                 height: success ? "auto" : 0,
+                display: "inline-block",
+                width: "100%"
             }} >
                 {success ? (
                     <Alert severity="success" sx={{ textAlign: 'left', fontSize: "0.9rem", backgroundColor: colors.greenAccent[800], }}>
@@ -167,13 +211,13 @@ const AddressList = ({ values, addressRef }) => {
                             {item?.pivot?.shipping_address ? (
                                 <Link disabled display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Home /> Shipping Address</Link>
                             ) : (
-                                <Link href="#" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Home /> Set as Shipping Address</Link>
+                                <Link onClick={() => switchType(item.id, "shipping_address")} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%", cursor: "pointer" }}><Home /> Set as Shipping Address</Link>
                             )}
                   
                             {item?.pivot?.billing_address ? (
                                 <Link disabled display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Invoice /> Billing Address</Link>
                             ) : (
-                                <Link href="#" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Invoice /> Set as Billing Address</Link>
+                                <Link onClick={() => switchType(item.id, "billing_address")}  display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%", cursor: "pointer"}}><Invoice /> Set as Billing Address</Link>
                             )}
                         </Box>
                     </Paper>
@@ -224,13 +268,13 @@ const AddressList = ({ values, addressRef }) => {
                             {item?.pivot?.shipping_address ? (
                                 <Link disabled display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Home /> Shipping Address</Link>
                             ) : (
-                                <Link href="#" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Home /> Set as Shipping Address</Link>
+                                <Link onClick={() => switchType(item.id, "shipping_address")} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%", cursor: "pointer"}}><Home /> Set as Shipping Address</Link>
                             )}
                   
                             {item?.pivot?.billing_address ? (
                                 <Link disabled display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Invoice /> Billing Address</Link>
                             ) : (
-                                <Link href="#" display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%"}}><Invoice /> Set as Billing Address</Link>
+                                <Link onClick={() => switchType(item.id, "billing_address")} display="flex" alignItems="flex-end" color="secondary" sx={{ pr: "2%", cursor: "pointer"}}><Invoice /> Set as Billing Address</Link>
                             )}
                         </Box>
                     </Paper>

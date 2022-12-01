@@ -7,6 +7,7 @@ const ADDRESS_ADD_POST_URL = "/api/add-address"
 const ADDRESS_EDIT_PUT_URL = "/api/edit-address/"
 const ADDRESS_DELETE_URL = "/api/delete-address/"
 const ADDRESS_GET_BY_ID_URL = "/api/address/"
+const CHANGE_TYPE_ADDRESS_URL = "/api/address/"
 
 export const getMyInformation = async () => {
     try {
@@ -94,6 +95,23 @@ export const updateAddress = async (id, address) => {
 
         if (res?.status === 200){
             return res?.data;
+        }
+
+        return null;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const switchTypeAddress = async (id, type) => {
+    try {
+        const res = await axios.put(`${CHANGE_TYPE_ADDRESS_URL}${type}/${id}`,
+        );
+        console.log(res);
+
+        if (res?.status === 200){
+            return true;
         }
 
         return null;
