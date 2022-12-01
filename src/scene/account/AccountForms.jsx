@@ -227,9 +227,12 @@ const AccountForms = ({ selected, labels, addressRef }) => {
                         )}
                 
 
-                        <Box display="flex" justifyContent="space-between" gap="50px" mt="20px">
-                            <ButtonUserSettings>save</ButtonUserSettings>
-                        </Box>
+                        {isAccount ? (
+                            <Box display="flex" justifyContent="space-between" gap="50px" mt="20px">
+                                <ButtonUserSettings>save</ButtonUserSettings>
+                            </Box>
+                        ) : (<></>)}
+                       
         
                     </form>
                 )}
