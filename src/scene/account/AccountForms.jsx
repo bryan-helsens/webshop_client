@@ -2,66 +2,13 @@ import { Alert, AlertTitle, Box, Button, useTheme } from '@mui/material'
 import { Formik } from 'formik'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as yup from "yup";
 import ButtonUserSettings from '../../components/button/ButtonUserSettings';
 import { getMyInformation, getUserAddresses, updateAccount } from '../../services/UserService';
 import { tokens } from '../../theme';
+import { accountInitialValues, accountScheme } from '../../_helpers/form_validation/accountValidation';
+import { addressInitialValues, addressScheme } from '../../_helpers/form_validation/addressValidation';
 import AddressList from './AddressList';
 import UserForm from './Forms/UserForm';
-
-const accountInitialValues = {
-    user: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-    },
-}
-
-const addressInitialValues = {
-    addresses: {
-        id: 0,
-        title: "",
-        firstName: "",
-        lastName: "",
-        street: "",
-        number: 0,
-        country: "",
-        city: "",
-        zipcode: "",
-        billing_address: false,
-    }
-}
-
-const accountScheme = [
-    yup.object().shape({
-        user: yup.object().shape({
-            firstName: yup.string().required("required").nullable(),
-            lastName: yup.string().required("required").nullable(),
-            email: yup.string().email("Invalid email").required("required").nullable(),
-            phone: yup.string().required("required").nullable(),
-        }),
-    })
-]
-
-const addressScheme = [
-    yup.object().shape({
-        addresses: yup.object().shape({
-            id: yup.number().required("required"),
-            title: yup.string(),
-            firstName: yup.string().required("required"),
-            lastName: yup.string().required("required"),
-            street: yup.string().required("required"),
-            number: yup.number().required("required"),
-            country: yup.string().required("required"),
-            city: yup.string().required("required"),
-            zipcode: yup.string().required("required"),
-            billing_address: yup.boolean(),
-            shipping_address: yup.boolean()
-        })
-    })
-]
-
 
 const AccountForms = ({ selected, labels, addressRef }) => {
 

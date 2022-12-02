@@ -3,42 +3,11 @@ import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
-import * as yup from "yup"
 import ButtonUserSettings from '../../../components/button/ButtonUserSettings'
 import Header from '../../../components/Header'
 import { getAddressByID, updateAddress } from '../../../services/UserService'
+import { addressInitialValuesEditAndAdd, addressSchemeEditAndAdd } from '../../../_helpers/form_validation/addressValidation'
 import AddressForm from './AddressForm'
-
-// add id to data????
-
-const initialValues = {
-    title: "",
-    firstName: "",
-    lastName: "",
-    street: "",
-    number: 0,
-    country: "",
-    city: "",
-    zipcode: "",
-    billing_address: false,
-    shipping_address: false,
-}
-
-const validationScheme = [
-    yup.object().shape({
-        title: yup.string(),
-        firstName: yup.string().required("required"),
-        lastName: yup.string().required("required"),
-        street: yup.string().required("required"),
-        number: yup.number().required("required"),
-        country: yup.string().required("required"),
-        city: yup.string().required("required"),
-        zipcode: yup.string().required("required"),
-        billing_address: yup.boolean(),
-        shipping_address: yup.boolean()
-    })
-]
-
 
 const EditAddress = () => {
     const params = useParams();
@@ -75,7 +44,6 @@ const EditAddress = () => {
         try {
             const id = params.id;
             const res = await updateAddress(id, values);
-            console.log(res);
       
             if (res){
               setSuccess(true);
@@ -111,8 +79,8 @@ const EditAddress = () => {
 
                 <Formik
                 onSubmit={handleFormSubmit}
-                initialValues={address || initialValues}
-                validationSchema={validationScheme[0]}
+                initialValues={address || addressInitialValuesEditAndAdd}
+                validationSchema={addressSchemeEditAndAdd[0]}
                 enableReinitialize
                 >
 

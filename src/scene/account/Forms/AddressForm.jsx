@@ -19,8 +19,6 @@ const MyRadio = ({ label, ...props }) => {
 const MyCheckbox = ({ label, ...props }) => {
     const [field, meta] = useField(props);
 
-    console.log(field);
-
     return (
         <FormControlLabel
             {...field}
@@ -64,11 +62,6 @@ const AddressForm = ({ values, errors, touched, handleBlur, handleChange, setFie
     if (values.title === null) {
         values.title = ''
     }
-
-    console.log(values.shipping_address, "address");
-
-
-    
 
   return (
     <Box
