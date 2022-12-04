@@ -9,8 +9,8 @@ import { AuthState } from '../../context/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const initialValues = {
-    email: "",
-    password: "",
+    email: "boe2@hotmail.com",
+    password: "Test3008!",
 }
 
 const userSchema = yup.object().shape({
