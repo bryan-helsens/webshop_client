@@ -1,4 +1,4 @@
-import axios from '../api/axios'
+import { axiosPrivate } from '../api/axios'
 
 const ME_GET_URL = '/api/me'
 const UPDATE_ACCOUNT_PUT_URL = '/api/update'
@@ -12,7 +12,7 @@ const CHANGE_TYPE_ADDRESS_URL = "/api/address/"
 export const getMyInformation = async () => {
     try {
         
-        const res = await axios.get(`${ME_GET_URL}`);
+        const res = await axiosPrivate.get(`${ME_GET_URL}`);
 
         if (res?.status === 200){
             return res?.data;
@@ -26,7 +26,7 @@ export const getMyInformation = async () => {
 
 export const getUserAddresses = async () => {
     try {
-        const res = await axios.get(`${ADDRESSES_GET_URL}`);
+        const res = await axiosPrivate.get(`${ADDRESSES_GET_URL}`);
 
         if (res?.status === 200){
             return res?.data;
@@ -41,7 +41,7 @@ export const getUserAddresses = async () => {
 export const getAddressByID = async (id) => {
     try {
         
-        const res = await axios.get(`${ADDRESS_GET_BY_ID_URL}${id}`);
+        const res = await axiosPrivate.get(`${ADDRESS_GET_BY_ID_URL}${id}`);
 
         if (res?.status === 200){
             return res?.data;
@@ -55,7 +55,7 @@ export const getAddressByID = async (id) => {
 
 export const updateAccount = async (user) => {
     try {
-        const res = await axios.put(`${UPDATE_ACCOUNT_PUT_URL}`,
+        const res = await axiosPrivate.put(`${UPDATE_ACCOUNT_PUT_URL}`,
             {user}
         );
 
@@ -72,7 +72,7 @@ export const updateAccount = async (user) => {
 
 export const addAddress = async (address) => {
     try {
-        const res = await axios.post(`${ADDRESS_ADD_POST_URL}`,
+        const res = await axiosPrivate.post(`${ADDRESS_ADD_POST_URL}`,
             {address}
         );
 
@@ -89,7 +89,7 @@ export const addAddress = async (address) => {
 
 export const updateAddress = async (id, address) => {
     try {
-        const res = await axios.put(`${ADDRESS_EDIT_PUT_URL}${id}`,
+        const res = await axiosPrivate.put(`${ADDRESS_EDIT_PUT_URL}${id}`,
             {address}
         );
 
@@ -106,7 +106,7 @@ export const updateAddress = async (id, address) => {
 
 export const switchTypeAddress = async (id, type) => {
     try {
-        const res = await axios.put(`${CHANGE_TYPE_ADDRESS_URL}${type}/${id}`,
+        const res = await axiosPrivate.put(`${CHANGE_TYPE_ADDRESS_URL}${type}/${id}`,
         );
         console.log(res);
 
@@ -123,7 +123,7 @@ export const switchTypeAddress = async (id, type) => {
 
 export const deleteAddressByID = async (id) => {
     try {
-        const res = await axios.delete(`${ADDRESS_DELETE_URL}${id}`);
+        const res = await axiosPrivate.delete(`${ADDRESS_DELETE_URL}${id}`);
         console.log(res, "res");
         if (res?.status === 200){
             return res?.data;

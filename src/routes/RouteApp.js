@@ -18,6 +18,7 @@ import Confirmation from '../scene/store/checkout/confirmation'
 import AccountSettings from '../scene/account'
 import AddAddress from '../scene/account/Forms/AddAddress'
 import EditAddress from '../scene/account/Forms/EditAddress'
+import { AxiosInterceptor } from '../api/axios'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -34,6 +35,7 @@ const RouteApp = () => {
   return (
     <div className="app">
       <BrowserRouter>
+      <AxiosInterceptor>
         {/*<Routes />*/}
         {/*    <Sidebar /> */}
         <main className="content">
@@ -66,6 +68,7 @@ const RouteApp = () => {
             <CartMenu />
             <Footer />
         </main>
+        </AxiosInterceptor>
       </BrowserRouter>
     </div>
   )

@@ -1,22 +1,11 @@
-import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect } from "react"
+import { axiosPrivate } from "./axios"
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export default axios.create({
-    baseURL: 'http://localhost:8000',
-});
-
-export const axiosPrivate = axios.create({
-    baseURL: 'http://localhost:8000',
-    withCredentials: true,
-    headers: { 'Content-Type': 'application/json'},
-});
-
-
-const AxiosInterceptor = ({ children }) => {
+const UseAxiosPrivate = () => {
     const navigate = useNavigate();
     const location = useLocation();
-
+    
     useEffect(() => {
         const responseInterceptor = axiosPrivate.interceptors.response.use(
             response => response,
@@ -35,7 +24,7 @@ const AxiosInterceptor = ({ children }) => {
     }, [])
 
 
-    return children;
+    return axiosPrivate;
 }
 
-export { AxiosInterceptor }
+export default UseAxiosPrivate
