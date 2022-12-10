@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logOut } from '../redux/authSlice';
 
+const URL = "http://localhost:8000"
+
 export default axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: URL,
 });
 
 export const axiosPrivate = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: URL,
     withCredentials: true,
     headers: { 'Content-Type': 'application/json'},
 });
@@ -33,7 +35,6 @@ const AxiosInterceptor = ({ children }) => {
                 return Promise.reject(error)
             }
         )
-
         return () => {
             axiosPrivate.interceptors.response.eject(responseInterceptor);
         }
