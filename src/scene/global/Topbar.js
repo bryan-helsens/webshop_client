@@ -15,6 +15,9 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { setIsCartOpen } from "../../redux/cartSlice";
 import { useRef } from 'react';
 import { useLayoutEffect } from 'react';
+import { logOut, selectCurrentUser } from '../../redux/authSlice';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Topbar = () => {
     const theme = useTheme();
@@ -22,9 +25,20 @@ const Topbar = () => {
     const colorMode = useContext(ColorModeContext)
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cart.cart);
-
     const stickyHeader = useRef()
+    const cart = useSelector((state) => state.cart.cart);
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    
+    const user = useSelector(selectCurrentUser);
+
+    useEffect(() => {
+        if (user){
+            setIsLoggedIn(true);
+        }else{
+            setIsLoggedIn(false);
+        }
+    }, [user])
+
     useLayoutEffect(() => {
       const mainHeader = document.getElementById('mainHeader')
       let fixedTop = stickyHeader.current.offsetTop
@@ -38,8 +52,6 @@ const Topbar = () => {
       window.addEventListener('scroll', fixedHeader)
     }, [])
 
-    const { isLoggedIn, setIsLoggedIn, setAuth } = AuthState()
-
     const signOut = async () => {
         console.log("logout");
         const res = await logout()
@@ -47,10 +59,11 @@ const Topbar = () => {
         console.log(res, 'logout');
 
         if (res.status === 200 || res.request.status === 200){
-            setAuth({})
-            setIsLoggedIn(false)
+            dispatch(logOut());
+            setIsLoggedIn(false);
         }
     }
+
 
   return (
     <Box display='flex' justifyContent="space-between" p={2} className="mainHeader" id="mainHeader" ref={stickyHeader} backgroundColor={colors.primary[900]}>

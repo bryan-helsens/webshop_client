@@ -24,12 +24,6 @@ export const login = async (email, password) => {
         )
 
         if (res?.status === 200 && res?.data?.user) {
-            const access_token = res?.data?.access_token
-
-            if (access_token) {
-                sessionStorage.setItem('user', JSON.stringify(res?.data))
-            }
-
             return res;
         }
     } catch (err) {
@@ -47,20 +41,12 @@ export const logout = async () => {
                 withCredentials: true,      
             }
         )
-        
-        if (res.status === 200 || res.status === 401) {
-            sessionStorage.removeItem('user')
+        if (res?.status === 200) {
+            return res;
         }
-
-        return res
 
     } catch (err) {
         console.error(err);
-
-        console.log(err);
-        /* if (err.response.status === 401){
-            sessionStorage.removeItem('user')
-        } */
     }
 
 }

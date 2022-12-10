@@ -7,6 +7,8 @@ import * as yup from 'yup'
 import { login } from '../../services/AuthService'
 import { AuthState } from '../../context/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../../redux/authSlice'
 
 const initialValues = {
     email: "boe2@hotmail.com",
@@ -19,8 +21,7 @@ const userSchema = yup.object().shape({
 })
 
 const Login = () => {
-    const { setAuth } = AuthState()
-
+    const dispatch = useDispatch();
     const userRef = useRef()
 
     const navigate = useNavigate();
@@ -44,10 +45,7 @@ const Login = () => {
 
             const res = await login(values.email, values.password)
             if (res){
-                const user = res?.data?.user
-                const access_token = res?.data?.access_token
-                const roles = res?.data?.roles
-                setAuth({ user, access_token, roles })
+                dispatch(setCredentials({ ...res?.data }))
 
                 setSuccess(true);
                 navigate(from, { replace: true });

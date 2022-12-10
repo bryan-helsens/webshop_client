@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+/* import { createContext, useContext, useEffect, useState } from "react";
 import { isAuthenticated } from "../services/AuthService";
 
 const Auth = createContext();
@@ -18,14 +18,17 @@ export const AuthContext = ({ children }) => {
     useEffect(() => {
         const checkLoggedIn = async () => {
             let cuser = isAuthenticated();
-            if (cuser === null) {
+            console.log(cuser);
+
+            if (cuser === null || cuser === {}) {
                 sessionStorage.setItem('user', '');
                 cuser = ''
                 setIsLoggedIn(false);
                 setAuth({})
+            }else{
+                setAuth(cuser)
+                setIsLoggedIn(true);
             }
-            setAuth(cuser)
-            setIsLoggedIn(true);
         }
         checkLoggedIn();
     },[])
@@ -53,4 +56,4 @@ export default AuthContext;
 
 export const AuthState = () => {
     return useContext(Auth);
-}; 
+};  */

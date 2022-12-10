@@ -55,10 +55,12 @@ const RouteApp = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<Confirmation />} />
 
-                <Route path="/account/settings" element={<AccountSettings />} />
-                <Route path="/account/settings/:item" element={<AccountSettings />} />
-                <Route path="/user-settings/add-address" element={<AddAddress />} />
-                <Route path="/user-settings/address/:id" element={<EditAddress />} />
+                <Route element={<RequireAuth allowedRoles={[Role.Costumer]} />}>
+                  <Route path="/account/settings" element={<AccountSettings />} />
+                  <Route path="/account/settings/:item" element={<AccountSettings />} />
+                  <Route path="/user-settings/add-address" element={<AddAddress />} />
+                  <Route path="/user-settings/address/:id" element={<EditAddress />} />
+                </Route>
 
 
                 {/* catch all */}

@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, Box, Button, useTheme } from '@mui/material'
 import { Formik } from 'formik'
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ButtonUserSettings from '../../components/button/ButtonUserSettings';
 import { getMyInformation, getUserAddresses, updateAccount } from '../../services/UserService';
 import { tokens } from '../../theme';
@@ -9,11 +9,17 @@ import { accountInitialValues, accountScheme } from '../../_helpers/form_validat
 import { addressInitialValues, addressScheme } from '../../_helpers/form_validation/addressValidation';
 import AddressList from './AddressList';
 import UserForm from './Forms/UserForm';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/authSlice';
+import { logout } from '../../services/AuthService';
 
 const AccountForms = ({ selected, labels, addressRef }) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [formValues, setFormValues] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -46,6 +52,12 @@ const AccountForms = ({ selected, labels, addressRef }) => {
                 setValidationScheme(addressScheme)
                 setLoading(false)
                 break;
+
+            case "logout":
+                console.log("logout");
+                signOut();
+                setLoading(false)
+                break;
         
             default:
                 break;
@@ -64,6 +76,18 @@ const AccountForms = ({ selected, labels, addressRef }) => {
     const getAddresses = async() => {
         const res = await getUserAddresses()
         setFormValues(res);
+    }
+
+    const signOut = async () => {
+        console.log("logout");
+        const res = await logout()
+
+        console.log(res, 'logout');
+
+        if (res.status === 200 || res.request.status === 200){
+            dispatch(logOut());
+            navigate('/', { replace: true });
+        }
     }
 
     const updateData = async (values) => {

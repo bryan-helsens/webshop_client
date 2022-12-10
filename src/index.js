@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { ProSidebarProvider } from 'react-pro-sidebar';
-import AuthContext from './context/AuthContext';
 import { Provider } from "react-redux";
 import store from './redux/store';
 import { persistStore } from 'redux-persist'
@@ -15,11 +14,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <AuthContext>
-          <ProSidebarProvider>
-            <App />
-          </ProSidebarProvider>
-        </AuthContext>
+        <ProSidebarProvider>
+          <App />
+        </ProSidebarProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>
