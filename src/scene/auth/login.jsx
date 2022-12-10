@@ -11,8 +11,8 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../redux/authSlice'
 
 const initialValues = {
-    email: "boe2@hotmail.com",
-    password: "Test3008!",
+    email: "",
+    password: "",
 }
 
 const userSchema = yup.object().shape({
