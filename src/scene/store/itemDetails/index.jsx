@@ -14,44 +14,36 @@ const ItemDetails = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { itemID } = useParams()
+  const { productID } = useParams()
   const [value, setValue] = useState("description")
   const [count, setCount] = useState(1)
   const [product, setProduct] = useState(null)
   const [relatedProducts, setRelatedProducts] = useState([])
   const [loading, setLoading] = useState(false)
-  const [category, setCategory] = useState("top")
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
 
   const getProductInfo = async () => {
-    const product = await getproductByID(itemID)
-    console.log(product, "pr");
-    setProduct(product)
+    const product = await getproductByID(productID)
 
-/*     console.log(product?.category?.slug);
-    if (product?.category?.slug === undefined){
-      setCategory("all")
-    }else{
-      setCategory(product?.category?.slug)
-    } */
+    setProduct(product)
+    getRelatedProductsAPI(product?.category ? product?.category : 'top');
+
   }
 
-  const getRelatedProductsAPI = async () => {
+  const getRelatedProductsAPI = async (category) => {
     const res = await getRelatedProducts(category)
     setRelatedProducts(res)
   }
 
   useEffect(() => {
     setLoading(true)
-    getProductInfo()
-    getRelatedProductsAPI()
+    getProductInfo();
 
     setLoading(false)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemID])
+  }, [productID])
 
   return (
     <Box
@@ -73,7 +65,7 @@ const ItemDetails = () => {
               alt={product?.name}
               width="100%"
               height="100%"
-              src={`${IMAGE_STORAGE_URL}${product?.image}`}
+              src={`${IMAGE_STORAGE_URL}${product?.image_url}`}
               style={{ objectFit: "contain" }}
             /> 
           </Box>
@@ -95,7 +87,7 @@ const ItemDetails = () => {
               </Box>
 
               <Typography variant="h1" mb="5px" fontWeight="bold">{product?.name}</Typography>
-              <Typography variant='h3'>€ {product?.price.replace('.', ',')}</Typography>
+              <Typography variant='h3'>€ {product?.price?.replace('.', ',')}</Typography>
               <Typography sx={{ mt: '20px' }} variant='h5'>{product?.short_description}</Typography>
             </Box>
 

@@ -1,10 +1,8 @@
 import { Box, LinearProgress, Pagination, Tab, Tabs, Typography, useMediaQuery, IconButton, InputBase } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { setItems } from '../../../redux/cartSlice';
 import Item from '../../../components/Item';
-import { getProducts } from '../../../services/ProductService';
+import { getProductsAPI } from '../../../services/ProductService';
 import SearchIcon from '@mui/icons-material/Search'
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
@@ -13,20 +11,20 @@ const ShoppingList = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
 
-    const dispatch = useDispatch()
-    const [value, setValue] = useState('all')
-    const [page, setPage] = useState(1)
+    const [category, setCategory] = useState("all");
+    const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0)
-    const [loading, setLoading] = useState(false)
-    const [search, setSearch] = useState('')
-    const items = useSelector((state) => state.cart.items);
+    const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState('');
+    const [products, setProducts] = useState([]);
+
     const breakPoint = useMediaQuery('(min-width:600px)')
     const tablet = useMediaQuery('(min-width:900px)')
 
     const productsRef = useRef(null);
 
     const handleChange = (e, newValue) => {
-        setValue(newValue)
+        setCategory(newValue);
         setPage(1)
     }
 
@@ -36,26 +34,25 @@ const ShoppingList = () => {
 
     const handleChangeSearch = (e) => {
         setSearch(e.target.value)
-
-        console.log(search);
     }
 
-    const getItems = async() => {
-        const res = await getProducts(page, value, search)
+    const getProducts = async () => {
+        const res = await getProductsAPI(page, category, search)
         const products = res.data
-        setTotal(res.last_page)
+        console.log(res);
+        setTotal(res.meta.last_page)
 
-        dispatch(setItems(products))
+        setProducts(products)
     }
 
     useEffect(() => {
         setLoading(true)
-        getItems()
+        getProducts()
 
         productsRef.current.scrollIntoView({behavior: 'smooth'});
         setLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, value, search])
+    }, [page, category, search])
 
   return (
     <Box width="80%" margin="80px auto">
@@ -72,7 +69,7 @@ const ShoppingList = () => {
             <Tabs
                 textColor="secondary"
                 indicatorColor="secondary"
-                value={value}
+                value={category}
                 onChange={handleChange}
                 centered
                 TabIndicatorProps={{ sx: { display: breakPoint ? "block" : "none" } }}
@@ -119,20 +116,20 @@ const ShoppingList = () => {
                     rowGap="20px"
                     columnGap="1.33%"
                 >
-                    {value === "all" &&
-                        items.map((item) => (
+                    {category === "all" &&
+                        products.map((item) => (
                             <Item item={item} key={`${item.name}-${item.id}`} />
                         ))}
-                    {value === "new" &&
-                        items.map((item) => (
+                    {category === "new" &&
+                        products.map((item) => (
                             <Item item={item} key={`${item.name}-${item.id}`} />
                         ))}
-                    {value === "best" &&
-                        items.map((item) => (
+                    {category === "best" &&
+                        products.map((item) => (
                             <Item item={item} key={`${item.name}-${item.id}`} />
                         ))}
-                    {value === "top" &&
-                        items.map((item) => (
+                    {category === "top" &&
+                        products.map((item) => (
                             <Item item={item} key={`${item.name}-${item.id}`} />
                         ))}
                 </Box>

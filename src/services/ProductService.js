@@ -1,8 +1,9 @@
 import axios from '../api/axios'
 
 const PRODUCTS_GET_URL = '/api/products'
+const PRODUCT_BY_ID_GET_URL = '/api/product'
 
-export const getProducts = async (page, category, search) => {
+export const getProductsAPI = async (page, category, search) => {
     try {  
         const res = await axios.get(`${PRODUCTS_GET_URL}?page=${page}&category_slug=${category}&search=${search}`);
 
@@ -32,10 +33,10 @@ export const getRelatedProducts = async (category) => {
 
 export const getproductByID = async (id) => {
     try {  
-        const res = await axios.get(`${PRODUCTS_GET_URL}/${id}`);
+        const res = await axios.get(`${PRODUCT_BY_ID_GET_URL}/${id}`);
 
         if (res?.status === 200) {
-            return res?.data;
+            return res?.data?.data;
         }
 
         return null;

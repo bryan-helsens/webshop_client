@@ -14,7 +14,7 @@ const Item = ({ item, width }) => {
 
     const [count, setCount] = useState(1)
     const [isHovered, setIsHovered] = useState(false)
-    const { category, price, name, image } = item;
+    const { category, price, name, image_url } = item;
 
   return (
     <Box width={width} display="flex" flexDirection="column" mb="20px">
@@ -27,7 +27,7 @@ const Item = ({ item, width }) => {
             alt={item.name}
             width="300px"
             height="400px"
-            src={`${IMAGE_STORAGE_URL}${image}`}
+            src={`${IMAGE_STORAGE_URL}${image_url}`}
             onClick={() => navigate(`/product/${item.id}`)}
             style={{ cursor: "pointer" }}
            /> 
@@ -64,7 +64,7 @@ const Item = ({ item, width }) => {
 
       <Box pt="3px" mt="auto">
         <Typography variant="subtitle2" color={colors.primary[100]}>
-          {category?.name}
+          {category}
         </Typography>
         <Typography color={colors.secondary} fontWeight="bold" fontSize="1.2rem" >{name}</Typography>
         <Typography fontWeight="bold" fontSize="1rem" color={colors.secondary}>€ {price.replace('.', ',')}</Typography>
