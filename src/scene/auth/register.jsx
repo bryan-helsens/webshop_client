@@ -1,11 +1,11 @@
-import { Alert, AlertTitle, Box, Button, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Link, Paper, Typography, useTheme } from '@mui/material'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import { tokens } from '../../theme'
 import { registerInitialValues, registerSchema } from '../../_helpers/form_validation/authValidation'
-import { register } from '../../services/AuthServices';
-import RegisterForm from '../form/RegisterForm';
+import { register } from '../../services/AuthService';
+import RegisterForm from '../forms/RegisterForm';
 
 const Register = () => {
     const [errMsg, setErrMsg] = useState('');

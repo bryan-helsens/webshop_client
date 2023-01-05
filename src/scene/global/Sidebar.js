@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import { Menu, MenuItem, Sidebar as ProSidebar } from 'react-pro-sidebar'
 import { tokens } from '../../theme';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined"
-import { AuthState } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
+import { useSelector } from 'react-redux';
+import { selectCurrentRoles, selectCurrentUser } from '../../redux/authSlice';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -33,7 +34,10 @@ const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
 
-    const { auth } = AuthState();
+    //const { auth } = AuthState();
+
+    const user = useSelector(selectCurrentUser);
+    const roles = useSelector(selectCurrentRoles);
 
   return (
     <Box
@@ -103,17 +107,17 @@ const Sidebar = () => {
 
                         <Box textAlign="center">
                             <Typography 
-                            variant="h2" 
-                            color={colors.grey[100]} 
-                            fontWeight="bold" 
-                            sx={{ m: "10px 0 0 0 "}}
+                              variant="h2" 
+                              color={colors.grey[100]} 
+                              fontWeight="bold" 
+                              sx={{ m: "10px 0 0 0 "}}
                             >
-                            {auth?.user?.name}
+                              {user?.name}
                             </Typography>
                             <Typography
-                            variant="h5"
-                            color={colors.greenAccent[500]}
-                            >{auth?.roles}</Typography>
+                              variant="h5"
+                              color={colors.greenAccent[500]}
+                            >{roles}</Typography>
                         </Box>
                     </Box>
                 )}

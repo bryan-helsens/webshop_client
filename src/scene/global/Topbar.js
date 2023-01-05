@@ -10,7 +10,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import { logout } from '../../services/AuthService';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthState } from '../../context/AuthContext';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { setIsCartOpen } from "../../redux/cartSlice";
 import { useRef } from 'react';
