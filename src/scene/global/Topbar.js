@@ -22,21 +22,19 @@ import { useEffect } from 'react';
 const Topbar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
-    const colorMode = useContext(ColorModeContext)
+    const colorMode = useContext(ColorModeContext);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const stickyHeader = useRef()
+    const stickyHeader = useRef();
+
     const cart = useSelector((state) => state.cart.cart);
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    
     const user = useSelector(selectCurrentUser);
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     useEffect(() => {
-        if (user){
-            setIsLoggedIn(true);
-        }else{
-            setIsLoggedIn(false);
-        }
+        user ? setIsLoggedIn(true) : setIsLoggedIn(false)
     }, [user])
 
     useLayoutEffect(() => {
@@ -53,14 +51,17 @@ const Topbar = () => {
     }, [])
 
     const signOut = async () => {
-        console.log("logout");
-        const res = await logout()
+        try {
+            console.log("logout");
+            const res = await logout()
+    
+            if (res.status === 200 || res.request.status === 200){
+                dispatch(logOut());
+                setIsLoggedIn(false);
+            }
 
-        console.log(res, 'logout');
-
-        if (res.status === 200 || res.request.status === 200){
-            dispatch(logOut());
-            setIsLoggedIn(false);
+        } catch (error) {
+            console.error(error);
         }
     }
 
@@ -95,6 +96,24 @@ const Topbar = () => {
                     <LightModeOutlinedIcon />
                 )}
             </IconButton>
+
+            <Badge
+                badgeContent={cart.length}
+                color="secondary"
+                invisible={cart.length === 0}
+                sx={{
+                    "& .MuiBadge-badge": {
+                        marginRight: "8px",
+                        marginTop: "6px"
+                    }
+                }}
+            >
+                <IconButton 
+                    onClick={() => dispatch(setIsCartOpen({}))}
+                >
+                    <ShoppingBagOutlinedIcon />
+                </IconButton>
+            </Badge>
     
 
             {isLoggedIn ? 
@@ -108,23 +127,6 @@ const Topbar = () => {
                     <IconButton>
                         <PersonOutlinedIcon onClick={() => navigate("/account/settings")} />
                     </IconButton>
-                    <Badge
-                        badgeContent={cart.length}
-                        color="secondary"
-                        invisible={cart.length === 0}
-                        sx={{
-                            "& .MuiBadge-badge": {
-                                marginRight: "8px",
-                                marginTop: "6px"
-                            }
-                        }}
-                    >
-                        <IconButton 
-                            onClick={() => dispatch(setIsCartOpen({}))}
-                        >
-                            <ShoppingBagOutlinedIcon />
-                        </IconButton>
-                    </Badge>
                     <IconButton>
                         <LogoutIcon onClick={signOut} />
                     </IconButton>
