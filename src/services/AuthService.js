@@ -16,11 +16,7 @@ const LOGOUT_URL = '/api/logout'
 export const login = async (email, password) => {
     try {
         const res = await axios.post(LOGIN_URL, 
-            {email, password},
-            {
-                headers: { 'Content-Type': 'application/json'},
-                withCredentials: true,
-            }
+            {email, password}
         )
 
         if (res?.status === 200 && res?.data?.user) {
@@ -37,7 +33,6 @@ export const logout = async () => {
     try {
         const res = await axios.get(LOGOUT_URL, 
             {
-                headers: { 'Content-Type': 'application/json'},
                 withCredentials: true,      
             }
         )

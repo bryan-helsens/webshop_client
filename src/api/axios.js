@@ -8,6 +8,7 @@ const URL = "http://localhost:8000"
 
 export default axios.create({
     baseURL: URL,
+    headers: { 'Content-Type': 'application/json'},
 });
 
 export const axiosPrivate = axios.create({
