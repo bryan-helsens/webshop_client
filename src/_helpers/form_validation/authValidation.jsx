@@ -8,8 +8,8 @@ export const registerInitialValues = {
 }
 
 export const loginInitialValues = {
-    email: "",
-    password: "",
+    email: "boe3008@hotmail.com",
+    password: "Boe3008!",
 }
 
 export const registerSchema = [

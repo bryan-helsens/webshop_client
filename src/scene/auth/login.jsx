@@ -12,7 +12,6 @@ import LoginForm from '../forms/LoginForm';
 
 const Login = () => {
     const dispatch = useDispatch();
-    const userRef = useRef()
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -23,7 +22,6 @@ const Login = () => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        userRef.current.focus()
         setErrMsg('');
     }, [])
 

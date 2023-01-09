@@ -1,4 +1,4 @@
-import axios from "../api/axios"
+import axios, { axiosPrivate } from "../api/axios"
 
 export const isAuthenticated = () => {
     const user = sessionStorage.getItem('user')
@@ -35,7 +35,7 @@ export const register = async (name, email, password, password_confirmation) => 
 
 export const login = async (email, password) => {
     try {
-        const res = await axios.post(LOGIN_URL, 
+        const res = await axiosPrivate.post(LOGIN_URL, 
             {email, password}
         )
 
