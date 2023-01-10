@@ -17,7 +17,7 @@ import { IMAGE_STORAGE_URL } from '../../api/URL'
 import { useEffect } from "react";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { useState } from "react";
-import { getCartItemsAPI } from "../../services/CartService";
+import { getCartItemsAPI, removeProductToCartAPI, updateQuantityAPI } from "../../services/CartService";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -44,6 +44,20 @@ const CartMenu = () => {
     useEffect(() => {
         setCartItems(cart)
     }, [isCartOpen, cart]) */
+
+    const removeProductToCart = async (product_id) => {
+        const res = await removeProductToCartAPI(product_id, user);
+        console.log(res);
+    }
+
+    const updateQuantity = async (product, quantity, type) => {
+        (type === '-') ? quantity-- : quantity ++;
+
+        if (quantity > 0 && quantity <= product.max_qty) {
+            const res = await updateQuantityAPI(product.id, user, quantity);
+            console.log(res);
+        }
+    }
     
 
   return (
@@ -103,25 +117,38 @@ const CartMenu = () => {
 
                                             <Box flex="1 1 60%">
                                                 <FlexBox mb="5px">
-                                                    <Typography fontWeight="bold" variant="h5">
+                                                    <Typography fontWeight="bold" variant="h4">
                                                         {item.name}
                                                     </Typography>
                                                     <IconButton
-                                                        onClick={() =>
-                                                            dispatch(removeFromCart({ id: item.id }))
-                                                        }
+                                                        sx={{ mt: "-10vh" }}
+                                                        onClick={() => {
+                                                            dispatch(removeFromCart({ id: item.id }));
+                                                            if (user) {
+                                                                removeProductToCart(item.id);
+                                                            }
+                                                        }}
                                                     >
                                                         <CloseIcon />
                                                     </IconButton>
                                                 </FlexBox>
-                                                <Typography>{item.short_description}</Typography>
                                                 <FlexBox m="15px 0">
                                                     <Box display="flex" alignItems="center" border={`1.5px solid ${colors.primary[300]}`} mr="20px" p="2px 5px" borderRadius="5%">
-                                                        <IconButton onClick={() => dispatch(decreaseCount({ id: item.id }))}>
+                                                        <IconButton onClick={() => {
+                                                            dispatch(decreaseCount({ id: item.id }));
+                                                            if (user) {
+                                                                updateQuantity(item, item.quantity, "-");
+                                                            }
+                                                        }}>
                                                             <RemoveIcon />
                                                         </IconButton>
                                                         <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{item.quantity}</Typography>
-                                                        <IconButton onClick={() => dispatch(increaseCount({ id: item.id }))}>
+                                                        <IconButton onClick={() => {
+                                                            dispatch(increaseCount({ id: item.id }));
+                                                            if (user) {
+                                                                updateQuantity(item, item.quantity, "+");
+                                                            }
+                                                        }}>
                                                             <AddIcon />
                                                         </IconButton>
                                                     </Box>
