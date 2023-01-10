@@ -7,7 +7,6 @@ const cart = localStorage.getItem('cart')
 const initialState = {
     isCartOpen: false,
     cart: cart,
-    items: [],
     totalPrice: 0,
     userInfo: [],
 }
@@ -32,11 +31,11 @@ export const cartSlice = createSlice({
             if (itemIndex < 0){
                 state.cart = [...state.cart, action.payload.item];
             }else{
-                state.cart[itemIndex].count = action.payload.item.count;          
+                state.cart[itemIndex].quantity = action.payload.item.quantity;          
             }
 
             state.totalPrice = state.cart.reduce((total, item) => {
-                return total + item.count * item.price;
+                return total + item.quantity * item.price;
             }, 0);
         },
     
@@ -44,33 +43,33 @@ export const cartSlice = createSlice({
             state.cart = state.cart.filter((item) => item.id !== action.payload.id);
             
             state.totalPrice = state.cart.reduce((total, item) => {
-                return total + item.count * item.price;
+                return total + item.quantity * item.price;
             }, 0);
         },
 
         increaseCount: (state, action) => {
             state.cart = state.cart.map((item) => {
                 if (item.id === action.payload.id) {
-                    item.count++;
+                    item.quantity++;
                 }
                 return item
             })
 
             state.totalPrice = state.cart.reduce((total, item) => {
-                return total + item.count * item.price;
+                return total + item.quantity * item.price;
             }, 0);
         },
 
         decreaseCount: (state, action) => {
             state.cart = state.cart.map((item) => {
-                if (item.id === action.payload.id && item.count > 1) {
-                    item.count--;
+                if (item.id === action.payload.id && item.quantity > 1) {
+                    item.quantity--;
                 }
                 return item
             })
 
             state.totalPrice = state.cart.reduce((total, item) => {
-                return total + item.count * item.price;
+                return total + item.quantity * item.price;
             }, 0);
         },
 
@@ -80,7 +79,7 @@ export const cartSlice = createSlice({
 
         calculateTotalPrice : (state) => {
             state.totalPrice = state.cart.reduce((total, item) => {
-                return total + item.count * item.price;
+                return total + item.quantity * item.price;
             }, 0);
         }
     }    

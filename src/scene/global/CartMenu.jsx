@@ -32,40 +32,19 @@ const CartMenu = () => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
-    const [empty, setEmpty] = useState('')
+  
 
     const cart = useSelector((state) => state.cart.cart);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
     const user = useSelector(selectCurrentUser);
 
-
-    const getCartItems = async () => {
-        const res = await getCartItemsAPI(user);
-        console.log(res);
-
-        if (!res.empty){
-            const cart = res.data;
-            console.log(cart);
-        }else{
-            console.log(res.message);
-            setEmpty(res.message);
-        }
-
-    }
+ /*    const [cartItems, setCartItems] = useState(cart);
 
     useEffect(() => {
-        setLoading(true);
-
-        if (user){
-            getCartItems();
-        }
-
-        setLoading(false);
-    }, [cart]);
+        setCartItems(cart)
+    }, [isCartOpen, cart]) */
     
-
-
 
   return (
     <Box 
@@ -102,15 +81,15 @@ const CartMenu = () => {
 
                     {/* Cart List */}
 
-                    {empty && cart === null ? (
+                    {cart.length === 0 ? (
                         <Box>
-                            <Typography fontWeight="bold" variant="h2" color={colors.redAccent[500]}>{empty}</Typography>
+                            <Typography fontWeight="bold" variant="h2" color={colors.redAccent[500]}>Cart is Empty</Typography>
                         </Box>
                     ) : (
                         <Box>
                             <Box>
-                                {cart.map((item) => (
-                                    <Box key={`${item.name}-${item.id}`}>
+                                {cart?.map((item) => (
+                                    <Box key={`${item?.name}-${item?.id}`}>
                                         <FlexBox p="15px 0">
                                             <Box flex="1 1 40%">
                                                 <img
@@ -135,19 +114,19 @@ const CartMenu = () => {
                                                         <CloseIcon />
                                                     </IconButton>
                                                 </FlexBox>
-                                                <Typography>{item.shortDescription}</Typography>
+                                                <Typography>{item.short_description}</Typography>
                                                 <FlexBox m="15px 0">
                                                     <Box display="flex" alignItems="center" border={`1.5px solid ${colors.primary[300]}`} mr="20px" p="2px 5px" borderRadius="5%">
                                                         <IconButton onClick={() => dispatch(decreaseCount({ id: item.id }))}>
                                                             <RemoveIcon />
                                                         </IconButton>
-                                                        <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{item.count}</Typography>
+                                                        <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{item.quantity}</Typography>
                                                         <IconButton onClick={() => dispatch(increaseCount({ id: item.id }))}>
                                                             <AddIcon />
                                                         </IconButton>
                                                     </Box>
                                                     <Typography fontWeight="bold" variant="h5">
-                                                        € {(item.price* item.count).toFixed(2)}
+                                                        € {(item.price * item.quantity).toFixed(2)}
                                                     </Typography>
                                                 </FlexBox>
                                             </Box>
@@ -160,7 +139,7 @@ const CartMenu = () => {
                             <Box m="20px 0">
                                 <FlexBox m="20px 0">
                                     <Typography fontWeight="bold" variant="h4">SUBTOTAL</Typography>
-                                    <Typography fontWeight="bold" variant="h4">€ {totalPrice.toFixed(2)}</Typography>
+                                    <Typography fontWeight="bold" variant="h4">€ {totalPrice?.toFixed(2)}</Typography>
                                 </FlexBox>
                                 <Button
                                     sx={{

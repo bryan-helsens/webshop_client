@@ -12,7 +12,7 @@ const Item = ({ item, width }) => {
     const colors = tokens(theme.palette.mode)
     const navigate = useNavigate();
 
-    const [count, setCount] = useState(1)
+    const [qty, setQty] = useState(1)
     const [isHovered, setIsHovered] = useState(false)
     const { category, price, name, image_url } = item;
 
@@ -48,16 +48,16 @@ const Item = ({ item, width }) => {
                 mr="20px" 
                 p="2px 5px"
               >
-                <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
+                <IconButton onClick={() => setQty(Math.max(qty - 1, 1))}>
                     <RemoveIcon />
                 </IconButton>
-                <Typography color={colors.primary[900]} sx={{ p: "0 5px" }} fontSize="1rem">{count}</Typography>
-                <IconButton onClick={() => setCount(count + 1)}>
+                <Typography color={colors.primary[900]} sx={{ p: "0 5px" }} fontSize="1rem">{qty}</Typography>
+                <IconButton onClick={() => setQty(qty + 1)}>
                     <AddIcon />
                 </IconButton>
               </Box>
 
-              <BtnAddToCart count={count} product={item} size="small" />
+              <BtnAddToCart quantity={qty} product={item} size="small" />
           </Box>
         </Box>
       </Box>

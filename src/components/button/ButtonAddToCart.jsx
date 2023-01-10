@@ -1,23 +1,13 @@
 import { Button, useTheme } from '@mui/material'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../redux/authSlice';
+import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
-import { addProductToCartAPI } from '../../services/CartService';
 import { tokens } from '../../theme';
 
-const BtnAddToCart = ({ count, product, size }) => {
+const BtnAddToCart = ({ quantity, product, size }) => {
     const dispatch = useDispatch()
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const user = useSelector(selectCurrentUser);
-
-    const addToCartDB = async () => {
-      if (user){
-        const res = await addProductToCartAPI(product.id, user, count);
-        console.log(res);
-      }
-    }
 
   return (
     <Button
@@ -35,8 +25,7 @@ const BtnAddToCart = ({ count, product, size }) => {
         variant="contained"
 
         onClick={() => {
-          //dispatch(addToCart({ item: { ...product, count }}));
-          addToCartDB();
+          dispatch(addToCart({ item: { ...product, quantity }}));
         }}
     >ADD TO CART</Button>
   )
