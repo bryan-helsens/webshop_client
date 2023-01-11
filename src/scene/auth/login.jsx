@@ -1,14 +1,15 @@
 import { Alert, AlertTitle, Box, Button, Link, Paper, Typography, useTheme } from '@mui/material'
 import { Formik } from 'formik'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import { tokens } from '../../theme'
 import { login } from '../../services/AuthService'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials } from '../../redux/authSlice'
 import { loginInitialValues, loginSchema } from '../../_helpers/form_validation/authValidation'
 import LoginForm from '../forms/LoginForm';
+import { updateCartDB } from '../../services/CartService'
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -21,6 +22,8 @@ const Login = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
+    const cart = useSelector((state) => state.cart.cart);
+
     useEffect(() => {
         setErrMsg('');
     }, [])
@@ -29,6 +32,13 @@ const Login = () => {
     const colors = tokens(theme.palette.mode);
     const paperStyle = { padding: 20, width: 500, margin: "20px auto", backgroundColor: `${colors.primary[400]}` }
 
+    const updateCartOnServer = async(user) => {
+        if (cart.length !== 0){
+            const res = await updateCartDB(user, cart);
+        }
+    }
+
+
     const handleFormSubmit = async (values) => {
         try {
 
@@ -36,6 +46,10 @@ const Login = () => {
             if (res?.status === 200){
                 setSuccess(true);
                 dispatch(setCredentials({ ...res?.data }));
+
+                const user = res?.data?.user;
+                updateCartOnServer(user);
+
                 navigate(from, { replace: true });
             }else{
                 setSuccess(false);

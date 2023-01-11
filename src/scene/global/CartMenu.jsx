@@ -14,10 +14,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import { IMAGE_STORAGE_URL } from '../../api/URL'
-import { useEffect } from "react";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { useState } from "react";
-import { getCartItemsAPI, removeProductToCartAPI, updateQuantityAPI } from "../../services/CartService";
+import { removeProductToCartAPI, updateQuantityAPI } from "../../services/CartService";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -33,21 +32,13 @@ const CartMenu = () => {
 
     const [loading, setLoading] = useState(false);
   
-
     const cart = useSelector((state) => state.cart.cart);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
     const user = useSelector(selectCurrentUser);
 
- /*    const [cartItems, setCartItems] = useState(cart);
-
-    useEffect(() => {
-        setCartItems(cart)
-    }, [isCartOpen, cart]) */
-
     const removeProductToCart = async (product_id) => {
         const res = await removeProductToCartAPI(product_id, user);
-        console.log(res);
     }
 
     const updateQuantity = async (product, quantity, type) => {
@@ -55,7 +46,6 @@ const CartMenu = () => {
 
         if (quantity > 0 && quantity <= product.max_qty) {
             const res = await updateQuantityAPI(product.id, user, quantity);
-            console.log(res);
         }
     }
     

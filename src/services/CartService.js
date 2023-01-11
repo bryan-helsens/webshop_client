@@ -4,6 +4,7 @@ const CART_GET_URL = '/api/cart'
 const CART_ADD_URL = '/api/cart/add/'
 const CART_REMOVE_URL = '/api/cart/remove/'
 const CART_UPDATE_QTY_URL = '/api/cart/update-quantity/'
+const CART_UPDATE_CART_DB_URL = '/api/cart/update-cart'
 
 export const getCartItemsAPI = async (user) => {
     try {  
@@ -72,6 +73,26 @@ export const updateQuantityAPI = async (product_id, user, quantity) => {
         }
 
         return null;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const updateCartDB = async (user, cartItems) => {
+    try {
+
+        const res = await axiosPrivate.post(`${CART_UPDATE_CART_DB_URL}`,
+            {user, cartItems}
+        );
+
+        console.log(res);
+
+        if (res?.status === 200) {
+            return res?.data;
+        }
+
+        return null;
+
     } catch (error) {
         console.error(error);
     }
