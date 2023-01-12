@@ -33,7 +33,6 @@ const CartMenu = () => {
     const [loading, setLoading] = useState(false);
   
     const cart = useSelector((state) => state.cart.cart);
-    console.log(cart);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
     const user = useSelector(selectCurrentUser);
@@ -102,7 +101,7 @@ const CartMenu = () => {
                                                     title={item?.name}
                                                     width="130px"
                                                     height="175px"
-                                                    src={`${IMAGE_STORAGE_URL}${item.image}`}
+                                                    src={`${IMAGE_STORAGE_URL}${item.image_url}`}
                                                 />
                                             </Box>
 
