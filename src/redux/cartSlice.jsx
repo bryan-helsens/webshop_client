@@ -20,8 +20,10 @@ export const cartSlice = createSlice({
             state.userInfo = action.payload;
         },
 
-        setItems: (state, action) => {
-            state.cart = action.payload;
+        setCartItems: (state, action) => {
+            console.log(action.payload);
+            state.cart = action.payload.cartItems
+            state.totalPrice = action.payload.total
         },
     
         addToCart: (state, action) => {
@@ -93,7 +95,7 @@ export const cartSlice = createSlice({
 })
 
 export const {
-    setItems,
+    setCartItems,
     addToCart,
     removeFromCart,
     increaseCount,

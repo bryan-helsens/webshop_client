@@ -10,6 +10,7 @@ import { setCredentials } from '../../redux/authSlice'
 import { loginInitialValues, loginSchema } from '../../_helpers/form_validation/authValidation'
 import LoginForm from '../forms/LoginForm';
 import { updateCartDB } from '../../services/CartService'
+import { setCartItems } from '../../redux/cartSlice'
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -33,9 +34,14 @@ const Login = () => {
     const paperStyle = { padding: 20, width: 500, margin: "20px auto", backgroundColor: `${colors.primary[400]}` }
 
     const updateCartOnServer = async(user) => {
-        if (cart.length !== 0){
-            const res = await updateCartDB(user, cart);
-        }
+        const res = await updateCartDB(user, cart);
+        console.log(res);
+        
+        updateCartRedux(res.cartItems, res.total);
+    }
+
+    const updateCartRedux = (cartItems, total) => {
+        dispatch(setCartItems({cartItems, total}));
     }
 
 

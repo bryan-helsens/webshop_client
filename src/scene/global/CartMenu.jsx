@@ -102,7 +102,7 @@ const CartMenu = () => {
                                                     title={item?.name}
                                                     width="130px"
                                                     height="175px"
-                                                    src={`${IMAGE_STORAGE_URL}${item.image_url}`}
+                                                    src={`${IMAGE_STORAGE_URL}${item.image}`}
                                                 />
                                             </Box>
 

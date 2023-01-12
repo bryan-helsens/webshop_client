@@ -85,7 +85,7 @@ export const updateCartDB = async (user, cartItems) => {
             {user, cartItems}
         );
 
-        console.log(res);
+        console.log(res, "updateDB");
 
         if (res?.status === 200) {
             return res?.data;
