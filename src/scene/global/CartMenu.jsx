@@ -33,6 +33,7 @@ const CartMenu = () => {
     const [loading, setLoading] = useState(false);
   
     const cart = useSelector((state) => state.cart.cart);
+    console.log(cart);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
     const user = useSelector(selectCurrentUser);
@@ -44,7 +45,10 @@ const CartMenu = () => {
     const updateQuantity = async (product, quantity, type) => {
         (type === '-') ? quantity-- : quantity ++;
 
+        console.log(quantity);
+
         if (quantity > 0 && quantity <= product.max_qty) {
+            console.log("send request");
             const res = await updateQuantityAPI(product.id, user, quantity);
         }
     }
@@ -134,10 +138,12 @@ const CartMenu = () => {
                                                         </IconButton>
                                                         <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{item.quantity}</Typography>
                                                         <IconButton onClick={() => {
-                                                            dispatch(increaseCount({ id: item.id }));
-                                                            if (user) {
-                                                                updateQuantity(item, item.quantity, "+");
-                                                            }
+                                                              if (item?.quantity <= item?.max_qty) {
+                                                                dispatch(increaseCount({ id: item.id }));
+                                                                if (user) {
+                                                                    updateQuantity(item, item.quantity, "+");
+                                                                }
+                                                              }
                                                         }}>
                                                             <AddIcon />
                                                         </IconButton>

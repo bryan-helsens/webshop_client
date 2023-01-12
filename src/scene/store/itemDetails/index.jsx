@@ -16,7 +16,7 @@ const ItemDetails = () => {
 
   const { productID } = useParams()
   const [value, setValue] = useState("description")
-  const [count, setCount] = useState(1)
+  const [qty, setQty] = useState(1)
   const [product, setProduct] = useState(null)
   const [relatedProducts, setRelatedProducts] = useState([])
   const [loading, setLoading] = useState(false)
@@ -93,24 +93,28 @@ const ItemDetails = () => {
 
             <Box display="flex" alignItems="center" justifyContent="space-between" minHeight="50px">
               <Box display="flex" alignItems="center" border={`1.5px solid ${colors.primary[300]}`} mr="20px" p="2px 5px" borderRadius="5%">
-                <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
+                <IconButton onClick={() => setQty(Math.max(qty - 1, 1))}>
                   <RemoveIcon />
                 </IconButton>
-                <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{count}</Typography>
-                <IconButton onClick={() => setCount(count + 1)}>
+                <Typography color={colors.grey[100]} sx={{ p: "0 5px" }} fontSize="1rem">{qty}</Typography>
+                <IconButton onClick={() => { 
+                    if (qty <= product?.max_qty) {
+                      setQty(qty + 1);
+                    }
+                 }}>
                   <AddIcon />
                 </IconButton>
               </Box>
 
-              <BtnAddToCart count={count} product={product} size="big"/>
+              <BtnAddToCart quantity={qty} product={product} size="big"/>
             </Box>
             
             <Box mt="20px">
               <Typography variant='h5'>Availability: 
                 <Typography variant='h5' sx={{ 
-                  color: product?.quantity > 0 ? "green" : "red"
+                  color: product?.max_qty > 0 ? "green" : "red"
                 }}>
-                  {product?.quantity > 0 ? `In Stock (${product.quantity} available)` : "Out Of Stock"}
+                  {product?.max_qty > 0 ? `In Stock (${product.max_qty} available)` : "Out Of Stock"}
                 </Typography>
               </Typography>
             </Box>
