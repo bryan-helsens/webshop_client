@@ -1,7 +1,6 @@
 import { axiosPrivate } from '../api/axios'
 
-const ME_GET_URL = '/api/me'
-const UPDATE_ACCOUNT_PUT_URL = '/api/update'
+const PROFILE_GET_POST_URL = '/api/profile'
 const ADDRESSES_GET_URL = "/api/addresses"
 const ADDRESS_ADD_POST_URL = "/api/add-address"
 const ADDRESS_EDIT_PUT_URL = "/api/edit-address/"
@@ -12,13 +11,34 @@ const CHANGE_TYPE_ADDRESS_URL = "/api/address/"
 export const getMyInformation = async () => {
     try {
         
-        const res = await axiosPrivate.get(`${ME_GET_URL}`);
+        const res = await axiosPrivate.get(`${PROFILE_GET_POST_URL}`);
+
+        console.log(res);
 
         if (res?.status === 200){
             return res?.data;
         }
 
         return null;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const updateAccount = async (customer) => {
+    try {
+        const res = await axiosPrivate.post(`${PROFILE_GET_POST_URL}`,
+            {customer}
+        );
+
+        console.log(res);
+
+        if (res?.status === 200){
+            return res?.data;
+        }
+
+        return null;
+
     } catch (error) {
         console.error(error);
     }
@@ -48,23 +68,6 @@ export const getAddressByID = async (id) => {
         }
 
         return null;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-export const updateAccount = async (user) => {
-    try {
-        const res = await axiosPrivate.put(`${UPDATE_ACCOUNT_PUT_URL}`,
-            {user}
-        );
-
-        if (res?.status === 200){
-            return res?.data;
-        }
-
-        return null;
-
     } catch (error) {
         console.error(error);
     }

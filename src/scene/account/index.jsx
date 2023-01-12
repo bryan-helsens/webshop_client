@@ -40,7 +40,6 @@ const AccountSettings = () => {
 
     const goToPage = (newSelected) => {
         navigate({pathname: '/account/settings/' + newSelected});
-        
     }
 
   return (

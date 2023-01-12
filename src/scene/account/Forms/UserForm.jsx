@@ -35,7 +35,7 @@ const UserForm = () => {
     const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery('(min-width:600px)')
 
-    const formattedName = (field) => `user.${field}`
+    const formattedName = (field) => `customer.${field}`
   return (
     <Box
         display="grid"
@@ -46,13 +46,13 @@ const UserForm = () => {
         }}
     >
         <MyTextField
-            name={formattedName('firstName')}
+            name={formattedName('first_name')}
             type="input"  
             columnWidth={2}
         />
 
         <MyTextField
-            name={formattedName('lastName')}
+            name={formattedName('last_name')}
             type="input"  
             columnWidth={2}
         />

@@ -1,9 +1,9 @@
 import * as yup from "yup"
 
 export const accountInitialValues = {
-    user: {
-        firstName: "",
-        lastName: "",
+    customer: {
+        first_name: "",
+        last_name: "",
         email: "",
         phone: "",
     },
@@ -11,9 +11,9 @@ export const accountInitialValues = {
 
 export const accountScheme = [
     yup.object().shape({
-        user: yup.object().shape({
-            firstName: yup.string().required("required").nullable(),
-            lastName: yup.string().required("required").nullable(),
+        customer: yup.object().shape({
+            first_name: yup.string().required("required").nullable(),
+            last_name: yup.string().required("required").nullable(),
             email: yup.string().email("Invalid email").required("required").nullable(),
             phone: yup.string().required("required").nullable(),
         }),

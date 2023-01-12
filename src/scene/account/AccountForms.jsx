@@ -92,7 +92,9 @@ const AccountForms = ({ selected, labels, addressRef }) => {
 
     const updateData = async (values) => {
         try {
-            const res = await updateAccount(values?.user);
+            const res = await updateAccount(values?.customer);
+
+            console.log(res);
 
             if (res){
                 setSuccess(true);
@@ -111,6 +113,8 @@ const AccountForms = ({ selected, labels, addressRef }) => {
     
 
     const handleFormSubmit = async (values, actions) => {
+        console.log(values);
+
         updateData(values);
     }
 
@@ -156,7 +160,7 @@ const AccountForms = ({ selected, labels, addressRef }) => {
             
                         {isAccount && (
                             <UserForm
-                                values={values?.user}
+                                values={values?.customer}
                                 errors={errors}
                                 touched={touched}
                                 handleBlur={handleBlur}
