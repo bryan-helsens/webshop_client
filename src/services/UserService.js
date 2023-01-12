@@ -8,12 +8,9 @@ const ADDRESS_DELETE_URL = "/api/delete-address/"
 const ADDRESS_GET_BY_ID_URL = "/api/address/"
 const CHANGE_TYPE_ADDRESS_URL = "/api/address/"
 
-export const getMyInformation = async () => {
+export const getMyProfile = async () => {
     try {
-        
         const res = await axiosPrivate.get(`${PROFILE_GET_POST_URL}`);
-
-        console.log(res);
 
         if (res?.status === 200){
             return res?.data;
@@ -25,7 +22,7 @@ export const getMyInformation = async () => {
     }
 }
 
-export const updateAccount = async (customer) => {
+export const updateProfile = async (customer) => {
     try {
         const res = await axiosPrivate.post(`${PROFILE_GET_POST_URL}`,
             {customer}

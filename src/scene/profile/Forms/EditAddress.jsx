@@ -49,7 +49,7 @@ const EditAddress = () => {
               setSuccess(true);
       
       
-              navigate({pathname: '/account/settings/addresses',  search: `?${createSearchParams({
+              navigate({pathname: '/profile/settings/addresses',  search: `?${createSearchParams({
                     success: true,
                     message: res.message,
                 })}` 

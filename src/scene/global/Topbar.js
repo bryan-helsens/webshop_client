@@ -125,7 +125,7 @@ const Topbar = () => {
                         <SettingsOutlinedIcon />
                     </IconButton>
                     <IconButton>
-                        <PersonOutlinedIcon onClick={() => navigate("/account/settings")} />
+                        <PersonOutlinedIcon onClick={() => navigate("/profile/settings")} />
                     </IconButton>
                     <IconButton>
                         <LogoutIcon onClick={signOut} />

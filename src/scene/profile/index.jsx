@@ -6,21 +6,21 @@ import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import ManageAccounts from '@mui/icons-material/ManageAccounts';
 import Logout from '@mui/icons-material/Logout';
 import { tokens } from '../../theme'
-import AccountForm from './AccountForms';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRef } from 'react';
+import ProfileForms from './ProfileForms';
 
 
 const data = [
-    {icon: <Person />, label: "Account", key: "account"},
+    {icon: <Person />, label: "Profile", key: "profile"},
     {icon: <ShoppingBag />, label: "Orders", key: "orders"},
-    {icon: <ManageAccounts />, label: "Account Data & Addresses", key: "addresses"},
+    {icon: <ManageAccounts />, label: "Profile Data & Addresses", key: "addresses"},
     {icon: <Logout />, label: "Logout", key: "logout"},
 ]
 
-const labels = ["account", "orders", "addresses", "logout"];
+const labels = ["profile", "orders", "addresses", "logout"];
 
-const AccountSettings = () => {
+const ProfileSettings = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ const AccountSettings = () => {
 
     useEffect(() => {
         if (item === '' || item === undefined || labels.indexOf(item) < -1) {
-            setSelected('account')
+            setSelected('profile')
         }else{
             setSelected(item)
         }
@@ -39,12 +39,12 @@ const AccountSettings = () => {
     
 
     const goToPage = (newSelected) => {
-        navigate({pathname: '/account/settings/' + newSelected});
+        navigate({pathname: '/profile/settings/' + newSelected});
     }
 
   return (
     <Box width="80%" margin="80px auto" textAlign="left"  ref={addressRef}>
-        <Header title="Account Settings" subtitle="Change your profile and account settings"/>
+        <Header title="Profile Details" subtitle="Change your profile and profile settings"/>
         
         <Box display="flex" >
             <Paper elevation={0} sx={{ padding: "20px", width: "100%", display: "flex"}} >  
@@ -84,7 +84,7 @@ const AccountSettings = () => {
                 <Box width="80%">
                     <Typography variant="h2" mb="20px" fontWeight="bold">{selected?.toUpperCase()}</Typography>
                     <Box>
-                        <AccountForm selected={selected} labels={labels} addressRef={addressRef}/>
+                        <ProfileForms selected={selected} labels={labels} addressRef={addressRef}/>
                     </Box>
                 </Box>
             </Paper>
@@ -93,4 +93,4 @@ const AccountSettings = () => {
   )
 }
 
-export default AccountSettings
+export default ProfileSettings

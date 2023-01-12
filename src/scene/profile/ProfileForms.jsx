@@ -3,17 +3,17 @@ import { Formik } from 'formik'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ButtonUserSettings from '../../components/button/ButtonUserSettings';
-import { getMyInformation, getUserAddresses, updateAccount } from '../../services/UserService';
+import { getMyProfile, getUserAddresses, updateProfile } from '../../services/UserService';
 import { tokens } from '../../theme';
-import { accountInitialValues, accountScheme } from '../../_helpers/form_validation/accountValidation';
+import { profileInitialValues, profileScheme } from '../../_helpers/form_validation/accountValidation';
 import { addressInitialValues, addressScheme } from '../../_helpers/form_validation/addressValidation';
 import AddressList from './AddressList';
-import UserForm from './Forms/UserForm';
+import ProfileForm from './Forms/ProfileForm';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/authSlice';
 import { logout } from '../../services/AuthService';
 
-const AccountForms = ({ selected, labels, addressRef }) => {
+const ProfileForms = ({ selected, labels, addressRef }) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -27,22 +27,21 @@ const AccountForms = ({ selected, labels, addressRef }) => {
     const [errMsg, setErrMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
 
-
     const [initialValues, setInitialValues] = useState({});
     const [validationScheme, setValidationScheme] = useState({});
 
-    const isAccount = selected === labels[0]
+    const isProfile = selected === labels[0]
     const isAddress = selected ===  labels[2]
 
     useEffect(() => {
         setLoading(true)
 
         switch (selected) {
-            case "account":
-                console.log("account");
-                getUserData()
-                setInitialValues(accountInitialValues)
-                setValidationScheme(accountScheme)
+            case "profile":
+                console.log("profile");
+                getProfileData()
+                setInitialValues(profileInitialValues)
+                setValidationScheme(profileScheme)
                 break;
 
             case "addresses":
@@ -64,11 +63,11 @@ const AccountForms = ({ selected, labels, addressRef }) => {
         }
 
 
-    }, [selected, isAccount, isAddress])
+    }, [selected, isProfile, isAddress])
 
 
-    const getUserData = async() => {
-        const res = await getMyInformation()
+    const getProfileData = async() => {
+        const res = await getMyProfile()
         setFormValues(res);
         setLoading(false)
     }
@@ -90,9 +89,9 @@ const AccountForms = ({ selected, labels, addressRef }) => {
         }
     }
 
-    const updateData = async (values) => {
+    const updateFormData = async (values) => {
         try {
-            const res = await updateAccount(values?.customer);
+            const res = await updateProfile(values?.customer);
 
             console.log(res);
 
@@ -115,7 +114,7 @@ const AccountForms = ({ selected, labels, addressRef }) => {
     const handleFormSubmit = async (values, actions) => {
         console.log(values);
 
-        updateData(values);
+        updateFormData(values);
     }
 
   return (
@@ -158,8 +157,8 @@ const AccountForms = ({ selected, labels, addressRef }) => {
                 }) => (
                     <form onSubmit={handleSubmit}>
             
-                        {isAccount && (
-                            <UserForm
+                        {isProfile && (
+                            <ProfileForm
                                 values={values?.customer}
                                 errors={errors}
                                 touched={touched}
@@ -202,7 +201,7 @@ const AccountForms = ({ selected, labels, addressRef }) => {
                         )}
                 
 
-                        {isAccount ? (
+                        {isProfile ? (
                             <Box display="flex" justifyContent="space-between" gap="50px" mt="20px">
                                 <ButtonUserSettings>save</ButtonUserSettings>
                             </Box>
@@ -219,4 +218,4 @@ const AccountForms = ({ selected, labels, addressRef }) => {
   )
 }
 
-export default AccountForms
+export default ProfileForms

@@ -51,11 +51,8 @@ export const login = async (email, password) => {
 
 export const logout = async () => {
     try {
-        const res = await axios.get(LOGOUT_URL, 
-            {
-                withCredentials: true,      
-            }
-        )
+        const res = await axiosPrivate.get(LOGOUT_URL);
+        
         if (res?.status === 200) {
             return res;
         }

@@ -113,7 +113,7 @@ const AddressList = ({ values, addressRef }) => {
             console.log(res);
 
             if (res){
-                navigate({ pathname: '/account/settings/addresses',  search: `?${createSearchParams({
+                navigate({ pathname: '/profile/settings/addresses',  search: `?${createSearchParams({
                     success: true,
                     message: "Successfully changed your " + type.replace("_"," "),
                 })}` 

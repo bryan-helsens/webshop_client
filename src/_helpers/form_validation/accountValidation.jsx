@@ -1,6 +1,6 @@
 import * as yup from "yup"
 
-export const accountInitialValues = {
+export const profileInitialValues = {
     customer: {
         first_name: "",
         last_name: "",
@@ -9,7 +9,7 @@ export const accountInitialValues = {
     },
 }
 
-export const accountScheme = [
+export const profileScheme = [
     yup.object().shape({
         customer: yup.object().shape({
             first_name: yup.string().required("required").nullable(),

@@ -30,7 +30,7 @@ const MyTextField = ({ columnWidth, ...props }) => {
     )
 }
 
-const UserForm = () => {
+const ProfileForm = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery('(min-width:600px)')
@@ -72,4 +72,4 @@ const UserForm = () => {
   )
 }
 
-export default UserForm
+export default ProfileForm
