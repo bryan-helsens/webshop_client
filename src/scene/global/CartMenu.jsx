@@ -16,7 +16,8 @@ import Header from "../../components/Header";
 import { IMAGE_STORAGE_URL } from '../../api/URL'
 import { selectCurrentUser } from "../../redux/authSlice";
 import { useState } from "react";
-import { removeProductToCartAPI, updateQuantityAPI } from "../../services/CartService";
+import { getCartItemsAPI, removeProductToCartAPI, updateQuantityAPI } from "../../services/CartService";
+import { useEffect } from "react";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -31,11 +32,25 @@ const CartMenu = () => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
+
+    const [cartItems, setCartItems] = useState(useSelector((state) => state.cart.cart));
   
     const cart = useSelector((state) => state.cart.cart);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
     const user = useSelector(selectCurrentUser);
+
+    const getCartDataFromServer = async () => {
+        const res = await getCartItemsAPI(user);
+        console.log(res);
+
+        setCartItems(res?.cartItems);
+    }
+
+    useEffect(() => {
+        getCartDataFromServer();
+    }, [isCartOpen === true])
+    
 
     const removeProductToCart = async (product_id) => {
         const res = await removeProductToCartAPI(product_id, user);
@@ -46,6 +61,8 @@ const CartMenu = () => {
 
         if (quantity > 0 && quantity <= product.max_qty) {
             const res = await updateQuantityAPI(product.id, user, quantity);
+
+            setCartItems(res?.cart)
         }
     }
     
@@ -85,14 +102,14 @@ const CartMenu = () => {
 
                     {/* Cart List */}
 
-                    {cart.length === 0 ? (
+                    {cartItems.length === 0 ? (
                         <Box>
                             <Typography fontWeight="bold" variant="h2" color={colors.redAccent[500]}>Cart is Empty</Typography>
                         </Box>
                     ) : (
                         <Box>
                             <Box>
-                                {cart?.map((item) => (
+                                {cartItems?.map((item) => (
                                     <Box key={`${item?.name}-${item?.id}`}>
                                         <FlexBox p="15px 0">
                                             <Box flex="1 1 40%">
@@ -101,7 +118,7 @@ const CartMenu = () => {
                                                     title={item?.name}
                                                     width="130px"
                                                     height="175px"
-                                                    src={`${IMAGE_STORAGE_URL}${item.image_url}`}
+                                                    src={`${IMAGE_STORAGE_URL}${item.image}`}
                                                 />
                                             </Box>
 
