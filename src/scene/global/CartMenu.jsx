@@ -33,6 +33,7 @@ const CartMenu = () => {
     const [loading, setLoading] = useState(false);
   
     const cart = useSelector((state) => state.cart.cart);
+    console.log(cart);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
     const user = useSelector(selectCurrentUser);
@@ -77,7 +78,7 @@ const CartMenu = () => {
                 <Box padding="30px" overflow="auto" height="100%">
                     {/* Header */}
                     <FlexBox mb="15px" sx={{ alignItems: "baseline !important" }}>
-                        <Header title={`SHOPPING BAG (${cart.length})`} subtitle=""/>
+                        <Header title={`SHOPPING BAG (${cart?.length})`} subtitle=""/>
                         <IconButton onClick={() => dispatch(setIsCartOpen({}))}>
                             <CloseIcon />
                         </IconButton>
@@ -85,7 +86,7 @@ const CartMenu = () => {
 
                     {/* Cart List */}
 
-                    {cart.length === 0 ? (
+                    {cart?.length === 0 || cart === null ? (
                         <Box>
                             <Typography fontWeight="bold" variant="h2" color={colors.redAccent[500]}>Cart is Empty</Typography>
                         </Box>

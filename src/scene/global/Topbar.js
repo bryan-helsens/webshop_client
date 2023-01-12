@@ -11,7 +11,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import { logout } from '../../services/AuthService';
 import { Link, useNavigate } from 'react-router-dom';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import { setIsCartOpen } from "../../redux/cartSlice";
+import { emptyCart, setIsCartOpen } from "../../redux/cartSlice";
 import { useRef } from 'react';
 import { useLayoutEffect } from 'react';
 import { logOut, selectCurrentUser } from '../../redux/authSlice';
@@ -56,6 +56,7 @@ const Topbar = () => {
     
             if (res.status === 200 || res.request.status === 200){
                 dispatch(logOut());
+                dispatch(emptyCart());
                 setIsLoggedIn(false);
             }
 
@@ -97,9 +98,9 @@ const Topbar = () => {
             </IconButton>
 
             <Badge
-                badgeContent={cart.length}
+                badgeContent={cart?.length}
                 color="secondary"
-                invisible={cart.length === 0}
+                invisible={cart?.length === 0}
                 sx={{
                     "& .MuiBadge-badge": {
                         marginRight: "8px",
